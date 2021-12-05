@@ -10,6 +10,8 @@ import { UPLOAD_PATH } from '../../paths';
 
 // 変換した動画の拡張子
 const EXTENSION = 'webm';
+// 変換した動画のサイズ
+const SIZE = 600;
 
 const router = Router();
 
@@ -27,7 +29,7 @@ router.post('/movies', async (req, res) => {
     // 動画の拡張子を指定する
     extension: EXTENSION,
     // 動画の縦横サイズを指定する (undefined は元動画に合わせる)
-    size: undefined,
+    size: SIZE,
   });
 
   const filePath = path.resolve(UPLOAD_PATH, `./movies/${movieId}.${EXTENSION}`);
