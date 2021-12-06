@@ -10,7 +10,9 @@ import { UPLOAD_PATH } from '../../paths';
 import { extractMetadataFromSound } from '../../utils/extract_metadata_from_sound';
 
 // 変換した音声の拡張子
-const EXTENSION = 'mp3';
+const EXTENSION = 'opus';
+// 変換した音声のビットレート
+const BITRATE = 128;
 
 const router = Router();
 
@@ -29,6 +31,8 @@ router.post('/sounds', async (req, res) => {
   const converted = await convertSound(req.body, {
     // 音声の拡張子を指定する
     extension: EXTENSION,
+    // 音声のビットレートを指定する
+    bitrate: BITRATE,
   });
 
   const filePath = path.resolve(UPLOAD_PATH, `./sounds/${soundId}.${EXTENSION}`);
