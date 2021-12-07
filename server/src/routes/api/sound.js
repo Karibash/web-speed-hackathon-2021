@@ -38,6 +38,19 @@ router.post('/sounds', async (req, res) => {
   const soundFilePath = path.resolve(UPLOAD_PATH, `./sounds/${soundId}.${EXTENSION}`);
   await fs.writeFile(soundFilePath, file);
 
+  const maxPeak = peaks.reduce((previous, current) => Math.max(previous, current));
+  const svgFile = `
+    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 100 1" fill="currentColor">
+      ${peaks.map((peak, index) => {
+        const ratio = peak / maxPeak;
+        return `<rect height="${ratio}" width="1" x="${index}" y="${1 - ratio}" />`;
+      }).join('')}
+    </svg>
+  `.replace(/\n\s+/g, '') + '\n';
+
+  const waveFilePath =  path.resolve(UPLOAD_PATH, `./waves/${soundId}.svg`);
+  await fs.writeFile(waveFilePath, svgFile);
+
   return res.status(200).type('application/json').send({ artist, id: soundId, title });
 });
 
