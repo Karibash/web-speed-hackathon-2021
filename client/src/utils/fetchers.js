@@ -1,21 +1,6 @@
 import { gzip } from 'pako';
 
 /**
- * @param {string} url
- * @returns {Promise<ArrayBuffer>}
- */
-async function fetchBinary(url) {
-  const result = await $.ajax({
-    async: false,
-    dataType: 'binary',
-    method: 'GET',
-    responseType: 'arraybuffer',
-    url,
-  });
-  return result;
-}
-
-/**
  * @template T
  * @param {string} url
  * @returns {Promise<T>}
@@ -77,4 +62,4 @@ async function sendJSON(url, data) {
   return result;
 }
 
-export { fetchBinary, fetchJSON, sendFile, sendJSON };
+export { fetchJSON, sendFile, sendJSON };
