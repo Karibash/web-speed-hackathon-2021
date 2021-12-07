@@ -28,15 +28,15 @@ router.post('/sounds', async (req, res) => {
 
   const { artist, title } = await extractMetadataFromSound(req.body);
 
-  const converted = await convertSound(req.body, {
+  const { file, peaks } = await convertSound(req.body, {
     // 音声の拡張子を指定する
     extension: EXTENSION,
     // 音声のビットレートを指定する
     bitrate: BITRATE,
   });
 
-  const filePath = path.resolve(UPLOAD_PATH, `./sounds/${soundId}.${EXTENSION}`);
-  await fs.writeFile(filePath, converted);
+  const soundFilePath = path.resolve(UPLOAD_PATH, `./sounds/${soundId}.${EXTENSION}`);
+  await fs.writeFile(soundFilePath, file);
 
   return res.status(200).type('application/json').send({ artist, id: soundId, title });
 });
