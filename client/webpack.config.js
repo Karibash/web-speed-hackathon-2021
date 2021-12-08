@@ -1,8 +1,10 @@
 const path = require('path');
 
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const webpack = require('webpack');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const SRC_PATH = path.resolve(__dirname, './src');
 const PUBLIC_PATH = path.resolve(__dirname, '../public');
@@ -11,6 +13,7 @@ const DIST_PATH = path.resolve(__dirname, '../dist');
 
 /** @type {import('webpack').Configuration} */
 const config = {
+  mode: process.env.NODE_ENV || 'none',
   devServer: {
     historyApiFallback: true,
     host: '0.0.0.0',
@@ -31,9 +34,12 @@ const config = {
       path.resolve(SRC_PATH, './index.jsx'),
     ],
   },
-  mode: 'none',
   module: {
     rules: [
+      {
+        test: /\.html$/,
+        use: ['html-loader'],
+      },
       {
         exclude: /node_modules/,
         test: /\.jsx?$/,
@@ -50,7 +56,7 @@ const config = {
     ],
   },
   output: {
-    filename: 'scripts/[name].js',
+    filename: 'scripts/[name].[contenthash].js',
     path: DIST_PATH,
   },
   plugins: [
@@ -64,13 +70,13 @@ const config = {
       BUILD_DATE: new Date().toISOString(),
       // Heroku では SOURCE_VERSION 環境変数から commit hash を参照できます
       COMMIT_HASH: process.env.SOURCE_VERSION || '',
-      NODE_ENV: 'development',
+      NODE_ENV: process.env.NODE_ENV || 'development',
     }),
     new MiniCssExtractPlugin({
-      filename: 'styles/[name].css',
+      filename: 'styles/[name].[contenthash].css',
     }),
     new HtmlWebpackPlugin({
-      inject: false,
+      inject: 'head',
       template: path.resolve(SRC_PATH, './index.html'),
     }),
   ],
@@ -80,6 +86,12 @@ const config = {
       fs: false,
       path: false,
     },
+  },
+  optimization: {
+    minimizer: [
+      new CssMinimizerPlugin(),
+      new TerserPlugin(),
+    ],
   },
 };
 
