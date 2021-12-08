@@ -53,7 +53,9 @@ const SoundPlayer = ({ sound }) => {
           <AspectRatioBox aspectHeight={1} aspectWidth={10}>
             <div className="relative w-full h-full">
               <div className="absolute inset-0 w-full h-full">
-                <img className="w-full h-full text-blue-600" src={getWavePath(sound.id)} alt="" loading="lazy" />
+                <svg className="w-full h-full text-blue-600">
+                  <use href={`${getWavePath(sound.id)}#${sound.id}`} />
+                </svg>
               </div>
               <div
                 className="absolute inset-0 w-full h-full bg-gray-300 opacity-75"

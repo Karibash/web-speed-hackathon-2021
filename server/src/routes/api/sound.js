@@ -40,7 +40,7 @@ router.post('/sounds', async (req, res) => {
 
   const maxPeak = peaks.reduce((previous, current) => Math.max(previous, current));
   const svgFile = `
-    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 100 1" fill="currentColor">
+    <svg id="${soundId}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 100 1" fill="currentColor">
       ${peaks.map((peak, index) => {
         const ratio = peak / maxPeak;
         return `<rect height="${ratio}" width="1" x="${index}" y="${1 - ratio}" />`;
