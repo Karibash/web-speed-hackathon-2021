@@ -60,8 +60,6 @@ const config = {
   plugins: [
     new webpack.ProvidePlugin({
       $: 'jquery',
-      AudioContext: ['standardized-audio-context', 'AudioContext'],
-      Buffer: ['buffer', 'Buffer'],
       'window.jQuery': 'jquery',
     }),
     new webpack.EnvironmentPlugin({
