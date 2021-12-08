@@ -48,7 +48,7 @@ router.post('/sounds', async (req, res) => {
     </svg>
   `.replace(/\n\s+/g, '') + '\n';
 
-  const waveFilePath =  path.resolve(UPLOAD_PATH, `./waves/${soundId}.svg`);
+  const waveFilePath =  path.resolve(UPLOAD_PATH, `./images/waves/${soundId}.svg`);
   await fs.writeFile(waveFilePath, svgFile);
 
   return res.status(200).type('application/json').send({ artist, id: soundId, title });

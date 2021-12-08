@@ -7,6 +7,22 @@ function getImagePath(imageId) {
 }
 
 /**
+ * @param {string} soundId
+ * @returns {string}
+ */
+function getWavePath(soundId) {
+  return `/images/waves/${soundId}.svg`;
+}
+
+/**
+ * @param {string} profileImageId
+ * @returns {string}
+ */
+function getProfileImagePath(profileImageId) {
+  return `/images/profiles/${profileImageId}.avif`;
+}
+
+/**
  * @param {string} movieId
  * @returns {string}
  */
@@ -20,22 +36,6 @@ function getMoviePath(movieId) {
  */
 function getSoundPath(soundId) {
   return `/sounds/${soundId}.opus`;
-}
-
-/**
- * @param {string} soundId
- * @returns {string}
- */
-function getWavePath(soundId) {
-  return `/waves/${soundId}.svg`;
-}
-
-/**
- * @param {string} profileImageId
- * @returns {string}
- */
-function getProfileImagePath(profileImageId) {
-  return `/images/profiles/${profileImageId}.avif`;
 }
 
 export { getImagePath, getMoviePath, getSoundPath, getWavePath, getProfileImagePath };
