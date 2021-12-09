@@ -19,6 +19,11 @@ const ProfileImage = sequelize.define('ProfileImage', {
     defaultValue: '',
     type: DataTypes.STRING,
   },
+  averageColor: {
+    allowNull: false,
+    defaultValue: '',
+    type: DataTypes.STRING,
+  },
   id: {
     allowNull: false,
     defaultValue: Sequelize.UUIDV4,
