@@ -11,6 +11,7 @@ body {
 }
 
 .font-awesome {
+  @apply inline-block leading-none;
   height: 1em;
   vertical-align: -0.125em;
   width: 1em;

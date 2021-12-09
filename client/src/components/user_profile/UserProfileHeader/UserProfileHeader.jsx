@@ -28,7 +28,7 @@ const UserProfileHeader = ({ user }) => {
         <p className="pt-2">{user.description}</p>
         <p className="pt-2 text-gray-600 text-sm">
           <span className="pr-1">
-            <CalendarAltIcon />
+            <CalendarAltIcon className="font-awesome" />
           </span>
           <span>
             <time dateTime={user.createdAt}>

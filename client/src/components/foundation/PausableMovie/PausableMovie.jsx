@@ -42,7 +42,7 @@ const PausableMovie = ({ src }) => {
             },
           )}
         >
-          {isPlaying ? <PauseIcon /> : <PlayIcon />}
+          {isPlaying ? <PauseIcon className="font-awesome" /> : <PlayIcon className="font-awesome" />}
         </div>
       </button>
     </AspectRatioBox>

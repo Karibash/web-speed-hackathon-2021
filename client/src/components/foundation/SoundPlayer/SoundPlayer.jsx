@@ -44,7 +44,7 @@ const SoundPlayer = ({ sound }) => {
           onClick={handleTogglePlaying}
           type="button"
         >
-          {isPlaying ? <PauseIcon /> : <PlayIcon />}
+          {isPlaying ? <PauseIcon className="font-awesome" /> : <PlayIcon className="font-awesome" />}
         </button>
       </div>
       <div className="flex flex-col flex-grow flex-shrink pt-2 min-w-0 h-full">
