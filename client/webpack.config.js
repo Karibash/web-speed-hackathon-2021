@@ -23,7 +23,7 @@ const config = {
     },
     static: [PUBLIC_PATH, UPLOAD_PATH],
   },
-  devtool: 'inline-source-map',
+  devtool: process.env.NODE_ENV === 'development' ? 'eval-cheap-module-source-map' : false,
   entry: {
     main: [
       path.resolve(SRC_PATH, './index.css'),
