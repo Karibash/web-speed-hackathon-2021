@@ -6,12 +6,13 @@ module.exports = {
         corejs: '3',
         modules: 'commonjs',
         useBuiltIns: 'usage',
+        targets: 'last 1 Chrome major version'
       },
     ],
     [
       '@babel/preset-react',
       {
-        development: true,
+        development: process.env.BABEL_ENV === 'development',
       },
     ],
   ],
