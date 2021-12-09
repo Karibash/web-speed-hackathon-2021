@@ -1,7 +1,7 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 
-import { FontAwesomeIcon } from '../../foundation/FontAwesomeIcon';
+import ExclamationCircle from '../../../assets/svg/fa-exclamation-circle-solid.svg';
 
 /**
  * @typedef {object} Props
@@ -13,7 +13,7 @@ const ModalErrorMessage = ({ children }) => {
   return (
     <span className={classNames('block h-6 text-red-600', { invisible: !children })}>
       <span className="mr-1">
-        <FontAwesomeIcon iconType="exclamation-circle" styleType="solid" />
+        <ExclamationCircle />
       </span>
       {children}
     </span>

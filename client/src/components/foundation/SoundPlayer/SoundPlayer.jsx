@@ -1,8 +1,9 @@
 import React from 'react';
 
+import PauseIcon from '../../../assets/svg/fa-pause-solid.svg';
+import PlayIcon from '../../../assets/svg/fa-play-solid.svg';
 import { getSoundPath, getWavePath } from '../../../utils/get_path';
 import { AspectRatioBox } from '../AspectRatioBox';
-import { FontAwesomeIcon } from '../FontAwesomeIcon';
 
 /**
  * @typedef {object} Props
@@ -43,7 +44,7 @@ const SoundPlayer = ({ sound }) => {
           onClick={handleTogglePlaying}
           type="button"
         >
-          <FontAwesomeIcon iconType={isPlaying ? 'pause' : 'play'} styleType="solid" />
+          {isPlaying ? <PauseIcon /> : <PlayIcon />}
         </button>
       </div>
       <div className="flex flex-col flex-grow flex-shrink pt-2 min-w-0 h-full">

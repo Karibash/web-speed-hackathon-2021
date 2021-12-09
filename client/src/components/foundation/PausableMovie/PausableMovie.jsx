@@ -1,8 +1,9 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 
+import PauseIcon from '../../../assets/svg/fa-pause-solid.svg';
+import PlayIcon from '../../../assets/svg/fa-play-solid.svg';
 import { AspectRatioBox } from '../AspectRatioBox';
-import { FontAwesomeIcon } from '../FontAwesomeIcon';
 
 /**
  * @typedef {object} Props
@@ -41,7 +42,7 @@ const PausableMovie = ({ src }) => {
             },
           )}
         >
-          <FontAwesomeIcon iconType={isPlaying ? 'pause' : 'play'} styleType="solid" />
+          {isPlaying ? <PauseIcon /> : <PlayIcon />}
         </div>
       </button>
     </AspectRatioBox>

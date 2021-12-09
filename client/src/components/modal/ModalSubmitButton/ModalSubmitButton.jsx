@@ -1,7 +1,7 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 
-import { FontAwesomeIcon } from '../../foundation/FontAwesomeIcon';
+import CircleNotchIcon from '../../../assets/svg/fa-circle-notch-solid.svg';
 
 /**
  * @typedef {object} Props
@@ -25,7 +25,7 @@ const ModalSubmitButton = ({ children, disabled, loading, onClick }) => {
       {loading ? (
         <span className="pr-2">
           <span className="inline-block animate-spin">
-            <FontAwesomeIcon iconType="circle-notch" styleType="solid" />
+            <CircleNotchIcon />
           </span>
         </span>
       ) : null}

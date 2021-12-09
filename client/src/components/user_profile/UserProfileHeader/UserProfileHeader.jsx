@@ -1,8 +1,8 @@
 import React from 'react';
 
+import CalendarAltIcon from '../../../assets/svg/fa-calendar-alt-regular.svg';
 import { getProfileImagePath } from '../../../utils/get_path';
 import { formatDate } from '../../../utils/format_date';
-import { FontAwesomeIcon } from '../../foundation/FontAwesomeIcon';
 
 /**
  * @typedef {object} Props
@@ -28,7 +28,7 @@ const UserProfileHeader = ({ user }) => {
         <p className="pt-2">{user.description}</p>
         <p className="pt-2 text-gray-600 text-sm">
           <span className="pr-1">
-            <FontAwesomeIcon iconType="calendar-alt" styleType="regular" />
+            <CalendarAltIcon />
           </span>
           <span>
             <time dateTime={user.createdAt}>
