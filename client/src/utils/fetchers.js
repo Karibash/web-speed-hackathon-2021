@@ -1,4 +1,13 @@
-import { gzip } from 'pako';
+/**
+ * @param {RequestInfo} input
+ * @param {RequestInit} init
+ * @returns {Promise<Response>}
+ */
+async function fetchApi(input, init) {
+  const result = await fetch(input, init);
+  if (!result.ok) throw Error(await result.json());
+  return result;
+}
 
 /**
  * @template T
@@ -6,13 +15,10 @@ import { gzip } from 'pako';
  * @returns {Promise<T>}
  */
 async function fetchJSON(url) {
-  const result = await $.ajax({
-    async: false,
-    dataType: 'json',
+  const result = await fetchApi(url, {
     method: 'GET',
-    url,
   });
-  return result;
+  return result.json();
 }
 
 /**
@@ -22,18 +28,14 @@ async function fetchJSON(url) {
  * @returns {Promise<T>}
  */
 async function sendFile(url, file) {
-  const result = await $.ajax({
-    async: false,
-    data: file,
-    dataType: 'json',
+  const result = await fetchApi(url, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/octet-stream',
     },
-    method: 'POST',
-    processData: false,
-    url,
+    body: file,
   });
-  return result;
+  return await result.json();
 }
 
 /**
@@ -43,23 +45,14 @@ async function sendFile(url, file) {
  * @returns {Promise<T>}
  */
 async function sendJSON(url, data) {
-  const jsonString = JSON.stringify(data);
-  const uint8Array = new TextEncoder().encode(jsonString);
-  const compressed = gzip(uint8Array);
-
-  const result = await $.ajax({
-    async: false,
-    data: compressed,
-    dataType: 'json',
+  const result = await fetchApi(url, {
+    method: 'POST',
     headers: {
-      'Content-Encoding': 'gzip',
       'Content-Type': 'application/json',
     },
-    method: 'POST',
-    processData: false,
-    url,
-  });
-  return result;
+    body: JSON.stringify(data)
+  })
+  return await result.json();
 }
 
-export { fetchJSON, sendFile, sendJSON };
+export { fetchApi, fetchJSON, sendFile, sendJSON };
