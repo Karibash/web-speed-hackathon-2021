@@ -68,6 +68,7 @@ const config = {
     }),
     new HtmlWebpackPlugin({
       inject: 'head',
+      publicPath: '/',
       template: path.resolve(SRC_PATH, './index.html'),
     }),
   ],
