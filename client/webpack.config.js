@@ -60,6 +60,7 @@ const config = {
   output: {
     filename: 'scripts/[name].[contenthash].js',
     path: DIST_PATH,
+    publicPath: '/'
   },
   plugins: [
     new webpack.EnvironmentPlugin({
@@ -72,8 +73,7 @@ const config = {
       filename: 'styles/[name].[contenthash].css',
     }),
     new HtmlWebpackPlugin({
-      inject: 'head',
-      publicPath: '/',
+      inject: true,
       template: path.resolve(SRC_PATH, './index.html'),
     }),
   ],
