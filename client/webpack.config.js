@@ -90,6 +90,12 @@ const config = {
       fs: false,
       path: false,
     },
+    alias: {
+      'react': 'preact/compat',
+      'react/jsx-runtime': 'preact/jsx-runtime',
+      'react-dom': 'preact/compat',
+      'react-dom/test-utils': 'preact/test-utils',
+    },
   },
   optimization: {
     minimizer: [
