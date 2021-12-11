@@ -2,7 +2,9 @@ const path = require('path');
 
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
@@ -30,6 +32,7 @@ const config = {
       path.resolve(SRC_PATH, './buildinfo.js'),
       path.resolve(SRC_PATH, './index.jsx'),
     ],
+    webfont: path.resolve(SRC_PATH, './styles/webfont.css'),
   },
   module: {
     rules: [
@@ -70,12 +73,16 @@ const config = {
       NODE_ENV: process.env.NODE_ENV || 'development',
     }),
     new MiniCssExtractPlugin({
-      filename: 'styles/[name].[contenthash].css',
+      filename: 'styles/[name].[contenthash].css'
     }),
     new HtmlWebpackPlugin({
       inject: true,
       template: path.resolve(SRC_PATH, './index.html'),
     }),
+    new HTMLInlineCSSWebpackPlugin({
+      filter: (fileName) => ['index.html', 'webfont'].some(name => fileName.includes(name)),
+    }),
+    new RemoveEmptyScriptsPlugin(),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],
