@@ -18,7 +18,8 @@ const PausableMovie = ({ src }) => {
   /** @type {React.RefObject<HTMLVideoElement>} */
   const videoRef = React.useRef(null);
 
-  const [isPlaying, setIsPlaying] = React.useState(true);
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const [isPlaying, setIsPlaying] = React.useState(!prefersReducedMotion);
   const handleClick = React.useCallback(() => {
     setIsPlaying((isPlaying) => {
       if (isPlaying) {
@@ -33,7 +34,7 @@ const PausableMovie = ({ src }) => {
   return (
     <AspectRatioBox aspectHeight={1} aspectWidth={1}>
       <button className="group relative block w-full h-full" onClick={handleClick} type="button">
-        <video ref={videoRef} className="w-full h-full object-cover" src={src} loop autoPlay playsInline muted />
+        <video className="w-full h-full object-cover" src={src} ref={videoRef} autoPlay={!prefersReducedMotion} loop playsInline muted />
         <div
           className={classNames(
             'absolute left-1/2 top-1/2 flex items-center justify-center w-16 h-16 text-white text-3xl bg-black bg-opacity-50 rounded-full transform -translate-x-1/2 -translate-y-1/2',
