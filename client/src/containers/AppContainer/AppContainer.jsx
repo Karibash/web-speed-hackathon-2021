@@ -4,6 +4,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 
 import { AppPage } from '../../components/application/AppPage';
 import { Suspense } from '../../components/foundation/Suspense';
+import { useModalState } from '../../contexts/ModalProvider';
 import { useFetch } from '../../hooks/use_fetch';
 import { fetchJSON } from '../../utils/fetchers';
 import { AuthModalContainer } from '../AuthModalContainer';
@@ -28,10 +29,7 @@ const AppContainer = () => {
     setActiveUser(data);
   }, [data]);
 
-  const [modalType, setModalType] = React.useState('none');
-  const handleRequestOpenAuthModal = React.useCallback(() => setModalType('auth'), []);
-  const handleRequestOpenPostModal = React.useCallback(() => setModalType('post'), []);
-  const handleRequestCloseModal = React.useCallback(() => setModalType('none'), []);
+  const modalType = useModalState();
 
   if (isLoading) {
     return (
@@ -43,11 +41,7 @@ const AppContainer = () => {
 
   return (
     <>
-      <AppPage
-        activeUser={activeUser}
-        onRequestOpenAuthModal={handleRequestOpenAuthModal}
-        onRequestOpenPostModal={handleRequestOpenPostModal}
-      >
+      <AppPage activeUser={activeUser}>
         <Routes>
           <Route element={<Suspense><TimelineContainer /></Suspense>} path="/" />
           <Route element={<Suspense><UserProfileContainer /></Suspense>} path="/users/:username" />
@@ -57,10 +51,8 @@ const AppContainer = () => {
         </Routes>
       </AppPage>
 
-      {modalType === 'auth' ? (
-        <AuthModalContainer onRequestCloseModal={handleRequestCloseModal} onUpdateActiveUser={setActiveUser} />
-      ) : null}
-      {modalType === 'post' ? <NewPostModalContainer onRequestCloseModal={handleRequestCloseModal} /> : null}
+      {modalType === 'auth' && <AuthModalContainer onUpdateActiveUser={setActiveUser} /> }
+      {modalType === 'post' && <NewPostModalContainer />}
     </>
   );
 };

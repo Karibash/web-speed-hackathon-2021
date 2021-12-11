@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Modal } from '../../components/modal/Modal';
 import { NewPostModalPage } from '../../components/new_post_modal/NewPostModalPage';
+import { useModalDispatch } from '../../contexts/ModalProvider';
 import { sendFile, sendJSON } from '../../utils/fetchers';
 
 /**
@@ -24,17 +25,17 @@ async function sendNewPost({ images, movie, sound, text }) {
   return sendJSON('/api/v1/posts', payload);
 }
 
-/**
- * @typedef {object} Props
- * @property {() => void} onRequestCloseModal
- */
-
-/** @type {React.VFC<Props>} */
-const NewPostModalContainer = ({ onRequestCloseModal }) => {
+/** @type {React.VFC} */
+const NewPostModalContainer = () => {
   const navigate = useNavigate();
 
   const [hasError, setHasError] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const dispatch = useModalDispatch();
+
+  const onRequestCloseModal = React.useCallback(() => {
+    dispatch('none');
+  }, []);
 
   const handleResetError = React.useCallback(() => {
     setHasError(false);
