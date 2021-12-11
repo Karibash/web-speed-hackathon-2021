@@ -91,6 +91,14 @@ const config = {
       },
       fileBlacklist: [/^.*(?<!\.js)$/],
     }),
+    new PreloadWebpackPlugin({
+      rel: 'preload',
+      include: {
+        type: 'allChunks',
+        entries: ['main'],
+      },
+      fileBlacklist: [/^.*(?<!\.css)$/],
+    }),
     new RemoveEmptyScriptsPlugin(),
   ],
   resolve: {
