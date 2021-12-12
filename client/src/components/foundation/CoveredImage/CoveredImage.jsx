@@ -4,7 +4,7 @@ import React from 'react';
  * @typedef {object} Props
  * @property {string} src
  * @property {string} alt
- * @property {string} loading
+ * @property {'auto' | 'eager' | 'lazy'} loading
  */
 
 /**
