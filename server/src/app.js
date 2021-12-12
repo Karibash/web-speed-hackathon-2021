@@ -1,26 +1,37 @@
-import Express from 'express';
-import bodyParser from 'body-parser';
-import session from 'express-session';
+import fastify from 'fastify';
+import fastifyCookie from 'fastify-cookie';
+import fastifySession from '@fastify/session';
 
 import { apiRouter } from './routes/api';
 import { staticRouter } from './routes/static';
 
-const app = Express();
+const app = fastify({
+  trustProxy: true,
+  bodyLimit: 1024 * 1024 * 10,
+});
 
-app.set('trust proxy', true);
+app.register(fastifyCookie);
+app.register(fastifySession, {
+  secret: 'a secret with minimum length of 32 characters',
+  saveUninitialized: false,
+  cookie: {
+    secure: 'auto',
+  },
+});
 
-app.use(
-  session({
-    proxy: true,
-    resave: false,
-    saveUninitialized: false,
-    secret: 'secret',
-  }),
-);
-app.use(bodyParser.json());
-app.use(bodyParser.raw({ limit: '10mb' }));
+app.addContentTypeParser('*', (request, payload, next) => {
+  const chunks = [];
+  payload.on('data', chunk => { chunks.push(chunk) })
+  payload.on('end', () => {
+    next(null, Buffer.concat(chunks));
+  });
+});
 
-app.use('/api/v1', apiRouter);
-app.use(staticRouter);
+app.register(apiRouter, { prefix: '/api/v1' });
+app.register(staticRouter);
+
+app.setNotFoundHandler((_request, reply) => {
+  reply.sendFile('index.html');
+});
 
 export { app };

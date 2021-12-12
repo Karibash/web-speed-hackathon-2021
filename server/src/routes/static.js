@@ -1,39 +1,28 @@
-import history from 'connect-history-api-fallback';
-import Router from 'express-promise-router';
-import serveStatic from 'serve-static';
+import fastifyStatic from 'fastify-static';
 
 import { CLIENT_DIST_PATH, PUBLIC_PATH, UPLOAD_PATH } from '../paths';
 
-const router = Router();
-
-// SPA 対応のため、ファイルが存在しないときに index.html を返す
-router.use(history());
-
-router.use(
-  serveStatic(UPLOAD_PATH, {
+/**
+ * @param {import('fastify').FastifyInstance} instance
+ * @param {import('fastify').FastifyPluginOptions} options
+ * @param {(err?: Error) => void} next
+ * @returns {() => void}
+ */
+const router = (instance, options, next) => {
+  instance.register(fastifyStatic, {
+    root: [
+      UPLOAD_PATH,
+      PUBLIC_PATH,
+      CLIENT_DIST_PATH,
+    ],
+    prefix: '/',
     etag: true,
     maxAge: '100y',
     immutable: true,
     lastModified: true,
-  }),
-);
+  });
 
-router.use(
-  serveStatic(PUBLIC_PATH, {
-    etag: true,
-    maxAge: '100y',
-    immutable: true,
-    lastModified: true,
-  }),
-);
-
-router.use(
-  serveStatic(CLIENT_DIST_PATH, {
-    etag: true,
-    maxAge: '100y',
-    immutable: true,
-    lastModified: true,
-  }),
-);
+  next();
+};
 
 export { router as staticRouter };

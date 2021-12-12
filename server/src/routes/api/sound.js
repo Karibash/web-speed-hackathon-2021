@@ -1,7 +1,6 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-import Router from 'express-promise-router';
 import httpErrors from 'http-errors';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -14,44 +13,52 @@ const EXTENSION = 'opus';
 // 変換した音声のビットレート
 const BITRATE = 128;
 
-const router = Router();
+/**
+ * @param {import('fastify').FastifyInstance} instance
+ * @param {import('fastify').FastifyPluginOptions} options
+ * @param {(err?: Error) => void} next
+ * @returns {() => void}
+ */
+const router = (instance, options, next) => {
+  instance.post('/sounds', async (request, reply) => {
+    if (request.session.userId === undefined) {
+      throw new httpErrors.Unauthorized();
+    }
+    if (Buffer.isBuffer(request.body) === false) {
+      throw new httpErrors.BadRequest();
+    }
 
-router.post('/sounds', async (req, res) => {
-  if (req.session.userId === undefined) {
-    throw new httpErrors.Unauthorized();
-  }
-  if (Buffer.isBuffer(req.body) === false) {
-    throw new httpErrors.BadRequest();
-  }
+    const soundId = uuidv4();
 
-  const soundId = uuidv4();
+    const { artist, title } = await extractMetadataFromSound(request.body);
 
-  const { artist, title } = await extractMetadataFromSound(req.body);
+    const { file, peaks } = await convertSound(request.body, {
+      // 音声の拡張子を指定する
+      extension: EXTENSION,
+      // 音声のビットレートを指定する
+      bitrate: BITRATE,
+    });
 
-  const { file, peaks } = await convertSound(req.body, {
-    // 音声の拡張子を指定する
-    extension: EXTENSION,
-    // 音声のビットレートを指定する
-    bitrate: BITRATE,
-  });
+    const soundFilePath = path.resolve(UPLOAD_PATH, `./sounds/${soundId}.${EXTENSION}`);
+    await fs.writeFile(soundFilePath, file);
 
-  const soundFilePath = path.resolve(UPLOAD_PATH, `./sounds/${soundId}.${EXTENSION}`);
-  await fs.writeFile(soundFilePath, file);
-
-  const maxPeak = peaks.reduce((previous, current) => Math.max(previous, current));
-  const svgFile = `
+    const maxPeak = peaks.reduce((previous, current) => Math.max(previous, current));
+    const svgFile = `
     <svg id="${soundId}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 100 1" fill="currentColor">
       ${peaks.map((peak, index) => {
-        const ratio = peak / maxPeak;
-        return `<rect height="${ratio}" width="1" x="${index}" y="${1 - ratio}" />`;
-      }).join('')}
+      const ratio = peak / maxPeak;
+      return `<rect height="${ratio}" width="1" x="${index}" y="${1 - ratio}" />`;
+    }).join('')}
     </svg>
   `.replace(/\n\s+/g, '') + '\n';
 
-  const waveFilePath =  path.resolve(UPLOAD_PATH, `./images/waves/${soundId}.svg`);
-  await fs.writeFile(waveFilePath, svgFile);
+    const waveFilePath =  path.resolve(UPLOAD_PATH, `./images/waves/${soundId}.svg`);
+    await fs.writeFile(waveFilePath, svgFile);
 
-  return res.status(200).type('application/json').send({ artist, id: soundId, title });
-});
+    reply.status(200).type('application/json').send({ artist, id: soundId, title });
+  });
+
+  next();
+};
 
 export { router as soundRouter };

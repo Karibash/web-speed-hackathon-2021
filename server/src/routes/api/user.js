@@ -1,73 +1,80 @@
-import Router from 'express-promise-router';
 import httpErrors from 'http-errors';
 
 import { Post, User } from '../../models';
 
-const router = Router();
+/**
+ * @param {import('fastify').FastifyInstance} instance
+ * @param {import('fastify').FastifyPluginOptions} options
+ * @param {(err?: Error) => void} next
+ * @returns {() => void}
+ */
+const router = (instance, options, next) => {
+  instance.get('/me', async (request, reply) => {
+    if (request.session.userId === undefined) {
+      throw new httpErrors.Unauthorized();
+    }
+    const user = await User.findByPk(request.session.userId);
 
-router.get('/me', async (req, res) => {
-  if (req.session.userId === undefined) {
-    throw new httpErrors.Unauthorized();
-  }
-  const user = await User.findByPk(req.session.userId);
+    if (user === null) {
+      throw new httpErrors.NotFound();
+    }
 
-  if (user === null) {
-    throw new httpErrors.NotFound();
-  }
-
-  return res.status(200).type('application/json').send(user);
-});
-
-router.put('/me', async (req, res) => {
-  if (req.session.userId === undefined) {
-    throw new httpErrors.Unauthorized();
-  }
-  const user = await User.findByPk(req.session.userId);
-
-  if (user === null) {
-    throw new httpErrors.NotFound();
-  }
-
-  Object.assign(user, req.body);
-  await user.save();
-
-  return res.status(200).type('application/json').send(user);
-});
-
-router.get('/users/:username', async (req, res) => {
-  const user = await User.findOne({
-    where: {
-      username: req.params.username,
-    },
+    reply.status(200).type('application/json').send(user);
   });
 
-  if (user === null) {
-    throw new httpErrors.NotFound();
-  }
+  instance.put('/me', async (request, reply) => {
+    if (request.session.userId === undefined) {
+      throw new httpErrors.Unauthorized();
+    }
+    const user = await User.findByPk(request.session.userId);
 
-  return res.status(200).type('application/json').send(user);
-});
+    if (user === null) {
+      throw new httpErrors.NotFound();
+    }
 
-router.get('/users/:username/posts', async (req, res) => {
-  const user = await User.findOne({
-    where: {
-      username: req.params.username,
-    },
+    Object.assign(user, request.body);
+    await user.save();
+
+    reply.status(200).type('application/json').send(user);
   });
 
-  if (user === null) {
-    throw new httpErrors.NotFound();
-  }
+  instance.get('/users/:username', async (request, reply) => {
+    const user = await User.findOne({
+      where: {
+        username: request.params.username,
+      },
+    });
 
-  const posts = await Post.findAll({
-    limit: req.query.limit,
-    offset: req.query.offset,
-    where: {
-      userId: user.id,
-    },
+    if (user === null) {
+      throw new httpErrors.NotFound();
+    }
+
+    reply.status(200).type('application/json').send(user);
   });
 
-  return res.status(200).type('application/json').send(posts);
-});
+  instance.get('/users/:username/posts', async (request, reply) => {
+    const user = await User.findOne({
+      where: {
+        username: request.params.username,
+      },
+    });
+
+    if (user === null) {
+      throw new httpErrors.NotFound();
+    }
+
+    const posts = await Post.findAll({
+      limit: request.query.limit,
+      offset: request.query.offset,
+      where: {
+        userId: user.id,
+      },
+    });
+
+    reply.status(200).type('application/json').send(posts);
+  });
+
+  next();
+};
 
 export { router as userRouter };

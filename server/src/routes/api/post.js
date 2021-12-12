@@ -1,64 +1,71 @@
-import Router from 'express-promise-router';
 import httpErrors from 'http-errors';
 
 import { Comment, Post } from '../../models';
 
-const router = Router();
+/**
+ * @param {import('fastify').FastifyInstance} instance
+ * @param {import('fastify').FastifyPluginOptions} options
+ * @param {(err?: Error) => void} next
+ * @returns {() => void}
+ */
+const router = (instance, options, next) => {
+  instance.get('/posts', async (request, reply) => {
+    const posts = await Post.findAll({
+      limit: request.query.limit,
+      offset: request.query.offset,
+    });
 
-router.get('/posts', async (req, res) => {
-  const posts = await Post.findAll({
-    limit: req.query.limit,
-    offset: req.query.offset,
+    reply.status(200).type('application/json').send(posts);
   });
 
-  return res.status(200).type('application/json').send(posts);
-});
+  instance.get('/posts/:postId', async (request, reply) => {
+    const post = await Post.findByPk(request.params.postId);
 
-router.get('/posts/:postId', async (req, res) => {
-  const post = await Post.findByPk(req.params.postId);
+    if (post === null) {
+      throw new httpErrors.NotFound();
+    }
 
-  if (post === null) {
-    throw new httpErrors.NotFound();
-  }
-
-  return res.status(200).type('application/json').send(post);
-});
-
-router.get('/posts/:postId/comments', async (req, res) => {
-  const posts = await Comment.findAll({
-    limit: req.query.limit,
-    offset: req.query.offset,
-    where: {
-      postId: req.params.postId,
-    },
+    reply.status(200).type('application/json').send(post);
   });
 
-  return res.status(200).type('application/json').send(posts);
-});
+  instance.get('/posts/:postId/comments', async (request, reply) => {
+    const posts = await Comment.findAll({
+      limit: request.query.limit,
+      offset: request.query.offset,
+      where: {
+        postId: request.params.postId,
+      },
+    });
 
-router.post('/posts', async (req, res) => {
-  if (req.session.userId === undefined) {
-    throw new httpErrors.Unauthorized();
-  }
+    reply.status(200).type('application/json').send(posts);
+  });
 
-  const post = await Post.create(
-    {
-      ...req.body,
-      userId: req.session.userId,
-    },
-    {
-      include: [
-        {
-          association: 'images',
-          through: { attributes: [] },
-        },
-        { association: 'movie' },
-        { association: 'sound' },
-      ],
-    },
-  );
+  instance.post('/posts', async (request, reply) => {
+    if (request.session.userId === undefined) {
+      throw new httpErrors.Unauthorized();
+    }
 
-  return res.status(200).type('application/json').send(post);
-});
+    const post = await Post.create(
+      {
+        ...request.body,
+        userId: request.session.userId,
+      },
+      {
+        include: [
+          {
+            association: 'images',
+            through: { attributes: [] },
+          },
+          { association: 'movie' },
+          { association: 'sound' },
+        ],
+      },
+    );
+
+    reply.status(200).type('application/json').send(post);
+  });
+
+  next();
+};
 
 export { router as postRouter };

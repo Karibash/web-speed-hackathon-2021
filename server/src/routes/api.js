@@ -1,4 +1,3 @@
-import Router from 'express-promise-router';
 import httpErrors from 'http-errors';
 import { ValidationError } from 'sequelize';
 
@@ -10,41 +9,49 @@ import { postRouter } from './api/post';
 import { soundRouter } from './api/sound';
 import { userRouter } from './api/user';
 
-const router = Router();
-
-router.use((_req, res, next) => {
-  res.header({
-    'Cache-Control': 'max-age=0',
+/**
+ * @param {import('fastify').FastifyInstance} instance
+ * @param {import('fastify').FastifyPluginOptions} options
+ * @param {(err?: Error) => void} next
+ * @returns {() => void}
+ */
+const router = (instance, options, next) => {
+  instance.addHook('preHandler', (_request, reply, next) => {
+    reply.header('Cache-Control', 'max-age=0');
+    next();
   });
-  return next();
-});
 
-router.use(initializeRouter);
-router.use(userRouter);
-router.use(postRouter);
-router.use(movieRouter);
-router.use(imageRouter);
-router.use(soundRouter);
-router.use(authRouter);
+  instance.register(initializeRouter);
+  instance.register(userRouter);
+  instance.register(postRouter);
+  instance.register(movieRouter);
+  instance.register(imageRouter);
+  instance.register(soundRouter);
+  instance.register(authRouter);
 
-router.use(async (err, _req, _res, _next) => {
-  if (err instanceof ValidationError) {
-    throw new httpErrors.BadRequest();
-  }
-  throw err;
-});
+  instance.addHook('onError', (_request, _reply, error, _next) => {
+    if (error instanceof ValidationError) {
+      throw new httpErrors.BadRequest();
+    }
+    throw error;
+  });
 
-router.use(async (err, _req, res, _next) => {
-  if (!('status' in err) || err.status === 500) {
-    console.error(err);
-  }
+  instance.setErrorHandler((error, request, reply) => {
+    const sendError = error instanceof ValidationError ? new httpErrors.BadRequest() : error;
 
-  return res
-    .status(err.status || 500)
-    .type('application/json')
-    .send({
-      message: err.message,
-    });
-});
+    if (!('status' in sendError) || sendError.status === 500) {
+      console.error(sendError);
+    }
+
+    reply
+      .status(sendError.status || 500)
+      .type('application/json')
+      .send({
+        message: sendError.message,
+      });
+  });
+
+  next();
+};
 
 export { router as apiRouter };
