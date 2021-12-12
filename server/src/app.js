@@ -1,6 +1,5 @@
 import Express from 'express';
 import bodyParser from 'body-parser';
-import compression from 'compression';
 import session from 'express-session';
 
 import { apiRouter } from './routes/api';
@@ -20,7 +19,6 @@ app.use(
 );
 app.use(bodyParser.json());
 app.use(bodyParser.raw({ limit: '10mb' }));
-app.use(compression());
 
 app.use((_req, res, next) => {
   res.header({
