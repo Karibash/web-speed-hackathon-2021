@@ -4,7 +4,6 @@ import { Router } from 'preact-router'
 
 import { AppPage } from '../../components/application/AppPage';
 import { Route } from '../../components/foundation/Route';
-import { useModalState } from '../../contexts/ModalProvider';
 import { useFetch } from '../../hooks/use_fetch';
 import { fetchJSON } from '../../utils/fetchers';
 import { AuthModalContainer } from '../AuthModalContainer';
@@ -28,8 +27,6 @@ const AppContainer = () => {
     setActiveUser(data);
   }, [data]);
 
-  const modalType = useModalState();
-
   if (isLoading) {
     return (
       <Helmet>
@@ -49,9 +46,8 @@ const AppContainer = () => {
           <Route component={NotFoundContainer} path="*" />
         </Router>
       </AppPage>
-
-      {modalType === 'auth' && <AuthModalContainer onUpdateActiveUser={setActiveUser} /> }
-      {modalType === 'post' && <NewPostModalContainer />}
+      <AuthModalContainer onUpdateActiveUser={setActiveUser} />
+      <NewPostModalContainer />
     </>
   );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { AuthModalPage } from '../../components/auth_modal/AuthModalPage';
 import { Modal } from '../../components/modal/Modal';
-import { useModalDispatch } from '../../contexts/ModalProvider';
+import { useModalState, useModalDispatch } from '../../contexts/ModalProvider';
 import { sendJSON } from '../../utils/fetchers';
 
 /**
@@ -14,6 +14,7 @@ import { sendJSON } from '../../utils/fetchers';
 const AuthModalContainer = ({ onUpdateActiveUser }) => {
   const [hasError, setHasError] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const state = useModalState();
   const dispatch = useModalDispatch();
 
   const onRequestCloseModal = React.useCallback(() => {
@@ -45,6 +46,7 @@ const AuthModalContainer = ({ onUpdateActiveUser }) => {
     [onRequestCloseModal, onUpdateActiveUser],
   );
 
+  if (state !== 'auth') return undefined;
   return (
     <Modal onRequestCloseModal={onRequestCloseModal}>
       <AuthModalPage

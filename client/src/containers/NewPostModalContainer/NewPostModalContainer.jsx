@@ -3,7 +3,7 @@ import { route } from 'preact-router';
 
 import { Modal } from '../../components/modal/Modal';
 import { NewPostModalPage } from '../../components/new_post_modal/NewPostModalPage';
-import { useModalDispatch } from '../../contexts/ModalProvider';
+import { useModalState, useModalDispatch } from '../../contexts/ModalProvider';
 import { sendFile, sendJSON } from '../../utils/fetchers';
 
 /**
@@ -29,6 +29,7 @@ async function sendNewPost({ images, movie, sound, text }) {
 const NewPostModalContainer = () => {
   const [hasError, setHasError] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const state = useModalState();
   const dispatch = useModalDispatch();
 
   const onRequestCloseModal = React.useCallback(() => {
@@ -55,6 +56,7 @@ const NewPostModalContainer = () => {
     [onRequestCloseModal, route],
   );
 
+  if (state !== 'post') return undefined;
   return (
     <Modal onRequestCloseModal={onRequestCloseModal}>
       <NewPostModalPage
