@@ -1,6 +1,5 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { useParams } from 'react-router-dom';
 
 import { InfiniteScroll } from '../../components/foundation/InfiniteScroll';
 import { PostPage } from '../../components/post/PostPage';
@@ -10,9 +9,7 @@ import { fetchJSON } from '../../utils/fetchers';
 import { NotFoundContainer } from '../NotFoundContainer';
 
 /** @type {React.VFC} */
-const PostContainer = () => {
-  const { postId } = useParams();
-
+const PostContainer = ({ postId }) => {
   const { data: post, isLoading: isLoadingPost } = useFetch(`/api/v1/posts/${postId}`, fetchJSON);
 
   const { data: comments, fetchMore } = useInfiniteFetch(`/api/v1/posts/${postId}/comments`, fetchJSON);

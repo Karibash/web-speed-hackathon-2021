@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { route } from 'preact-router';
 
 import { getProfileImagePath } from '../../../utils/get_path';
 import { formatDate } from '../../../utils/format_date';
+import { Link } from '../../foundation/Link';
 import { ImageArea } from '../../post/ImageArea';
 import { MovieArea } from '../../post/MovieArea';
 import { SoundArea } from '../../post/SoundArea';
@@ -33,8 +34,6 @@ const isClickedAnchorOrButton = (target, currentTarget) => {
 
 /** @type {React.VFC<Props>} */
 const TimelineItem = ({ post }) => {
-  const navigate = useNavigate();
-
   /**
    * ボタンやリンク以外の箇所をクリックしたとき かつ 文字が選択されてないとき、投稿詳細ページに遷移する
    * @type {React.MouseEventHandler}
@@ -43,10 +42,10 @@ const TimelineItem = ({ post }) => {
     (ev) => {
       const isSelectedText = document.getSelection().isCollapsed === false;
       if (!isClickedAnchorOrButton(ev.target, ev.currentTarget) && !isSelectedText) {
-        navigate(`/posts/${post.id}`);
+        route(`/posts/${post.id}`);
       }
     },
-    [post, navigate],
+    [post, route],
   );
 
   return (

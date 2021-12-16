@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
+import { Link } from '../../foundation/Link';
 import { ModalErrorMessage } from '../../modal/ModalErrorMessage';
 import { ModalSubmitButton } from '../../modal/ModalSubmitButton';
 import { AuthInput } from '../AuthInput';

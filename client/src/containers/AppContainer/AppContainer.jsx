@@ -1,9 +1,9 @@
 import React, { lazy } from 'react';
 import { Helmet } from 'react-helmet';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Router } from 'preact-router'
 
 import { AppPage } from '../../components/application/AppPage';
-import { Suspense } from '../../components/foundation/Suspense';
+import { Route } from '../../components/foundation/Route';
 import { useModalState } from '../../contexts/ModalProvider';
 import { useFetch } from '../../hooks/use_fetch';
 import { fetchJSON } from '../../utils/fetchers';
@@ -18,10 +18,9 @@ const NotFoundContainer = lazy(() => import('../NotFoundContainer').then(module 
 
 /** @type {React.VFC} */
 const AppContainer = () => {
-  const { pathname } = useLocation();
-  React.useEffect(() => {
+  const onChangeRoute = React.useCallback(() => {
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, []);
 
   const [activeUser, setActiveUser] = React.useState(null);
   const { data, isLoading } = useFetch('/api/v1/me', fetchJSON);
@@ -42,13 +41,13 @@ const AppContainer = () => {
   return (
     <>
       <AppPage activeUser={activeUser}>
-        <Routes>
-          <Route element={<Suspense><TimelineContainer /></Suspense>} path="/" />
-          <Route element={<Suspense><UserProfileContainer /></Suspense>} path="/users/:username" />
-          <Route element={<Suspense><PostContainer /></Suspense>} path="/posts/:postId" />
-          <Route element={<Suspense><TermContainer /></Suspense>} path="/terms" />
-          <Route element={<Suspense><NotFoundContainer /></Suspense>} path="*" />
-        </Routes>
+        <Router onChange={onChangeRoute}>
+          <Route component={TimelineContainer} path="/" />
+          <Route component={UserProfileContainer} path="/users/:username" />
+          <Route component={PostContainer} path="/posts/:postId" />
+          <Route component={TermContainer} path="/terms" />
+          <Route component={NotFoundContainer} path="*" />
+        </Router>
       </AppPage>
 
       {modalType === 'auth' && <AuthModalContainer onUpdateActiveUser={setActiveUser} /> }

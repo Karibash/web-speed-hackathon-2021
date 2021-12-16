@@ -2,8 +2,8 @@ import React from 'react';
 
 /**
  * @typedef {object} Props
- * @property {React.ReactNode} children
- * @property {React.ReactNode} fallback
+ * @property {preact.AnyComponent} children
+ * @property {preact.AnyComponent} fallback
  */
 
 /**

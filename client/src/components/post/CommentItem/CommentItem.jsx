@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
+import { Link } from '../../foundation/Link';
 import { getProfileImagePath } from '../../../utils/get_path';
 import { formatDate } from '../../../utils/format_date';
 
