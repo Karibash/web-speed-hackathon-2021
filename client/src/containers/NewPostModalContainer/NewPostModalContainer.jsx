@@ -1,5 +1,5 @@
 import React from 'react';
-import { route } from 'preact-router';
+import { useLocation } from 'preact-iso';
 
 import { Modal } from '../../components/modal/Modal';
 import { NewPostModalPage } from '../../components/new_post_modal/NewPostModalPage';
@@ -29,6 +29,7 @@ async function sendNewPost({ images, movie, sound, text }) {
 const NewPostModalContainer = () => {
   const [hasError, setHasError] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const { route } = useLocation();
   const state = useModalState();
   const dispatch = useModalDispatch();
 

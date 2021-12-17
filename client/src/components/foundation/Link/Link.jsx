@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link as LinkBase } from 'preact-router/match';
+import { useRoute } from 'preact-iso';
+import classNames from 'classnames';
 
 /**
  * @typedef {object} Props
@@ -13,13 +14,16 @@ import { Link as LinkBase } from 'preact-router/match';
 /**
  * @type {React.VFC<Props>}
  */
-const Link = ({ className, activeClassName, to, children, onClick }) => {
-  // HACK: activeClassNameを使用する際に、classNameを併用する事が出来ないのでclassを使用するようにする
-  // https://github.com/preactjs/preact-router/pull/386
+const Link = ({ className: baseClassName, activeClassName, to, children, onClick }) => {
+  const { path } = useRoute();
+  const className = React.useMemo(() => {
+    return classNames(baseClassName, { [activeClassName]: path === to });
+  }, [baseClassName, activeClassName, to, path]);
+
   return (
-    <LinkBase class={className} activeClassName={activeClassName} href={to} onClick={onClick}>
+    <a className={className} href={to} onClick={onClick}>
       {children}
-    </LinkBase>
+    </a>
   );
 };
 
