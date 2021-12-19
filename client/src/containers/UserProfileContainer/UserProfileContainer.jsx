@@ -1,7 +1,7 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 
 import { InfiniteScroll } from '../../components/foundation/InfiniteScroll';
+import { Title } from '../../components/foundation/Title';
 import { UserProfilePage } from '../../components/user_profile/UserProfilePage';
 import { useFetch } from '../../hooks/use_fetch';
 import { useInfiniteFetch } from '../../hooks/use_infinite_fetch';
@@ -14,11 +14,7 @@ const UserProfileContainer = ({ username }) => {
   const { data: posts, fetchMore } = useInfiniteFetch(`/api/v1/users/${username}/posts`, fetchJSON);
 
   if (isLoadingUser) {
-    return (
-      <Helmet>
-        <title>読込中 - CAwitter</title>
-      </Helmet>
-    );
+    return <Title>読込中 - CAwitter</Title>;
   }
 
   if (user === null) {
@@ -27,9 +23,7 @@ const UserProfileContainer = ({ username }) => {
 
   return (
     <InfiniteScroll fetchMore={fetchMore} items={posts}>
-      <Helmet>
-        <title>{user.name} さんのタイムライン - CAwitter</title>
-      </Helmet>
+      <Title>{user.name} さんのタイムライン - CAwitter</Title>
       <UserProfilePage timeline={posts} user={user} />
     </InfiniteScroll>
   );

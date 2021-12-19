@@ -1,9 +1,9 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { Router } from 'preact-router';
 import loadable from '@loadable/component';
 
 import { AppPage } from '../../components/application/AppPage';
+import { Title } from '../../components/foundation/Title';
 import { useFetch } from '../../hooks/use_fetch';
 import { fetchJSON } from '../../utils/fetchers';
 import { AuthModalContainer } from '../AuthModalContainer';
@@ -28,11 +28,7 @@ const AppContainer = () => {
   }, [data]);
 
   if (isLoading) {
-    return (
-      <Helmet>
-        <title>読込中 - CAwitter</title>
-      </Helmet>
-    );
+    return <Title>読込中 - CAwitter</Title>;
   }
 
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 
 import { InfiniteScroll } from '../../components/foundation/InfiniteScroll';
+import { Title } from '../../components/foundation/Title';
 import { PostPage } from '../../components/post/PostPage';
 import { useFetch } from '../../hooks/use_fetch';
 import { useInfiniteFetch } from '../../hooks/use_infinite_fetch';
@@ -15,11 +15,7 @@ const PostContainer = ({ postId }) => {
   const { data: comments, fetchMore } = useInfiniteFetch(`/api/v1/posts/${postId}/comments`, fetchJSON);
 
   if (isLoadingPost) {
-    return (
-      <Helmet>
-        <title>読込中 - CAwitter</title>
-      </Helmet>
-    );
+    return <Title>読込中 - CAwitter</Title>;
   }
 
   if (post === null) {
@@ -28,9 +24,7 @@ const PostContainer = ({ postId }) => {
 
   return (
     <InfiniteScroll fetchMore={fetchMore} items={comments}>
-      <Helmet>
-        <title>{post.user.name} さんのつぶやき - CAwitter</title>
-      </Helmet>
+      <Title>{post.user.name} さんのつぶやき - CAwitter</Title>
       <PostPage comments={comments} post={post} />
     </InfiniteScroll>
   );
