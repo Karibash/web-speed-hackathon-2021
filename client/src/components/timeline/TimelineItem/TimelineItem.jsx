@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'preact-iso';
+import { route } from 'preact-router';
 
 import { getProfileImagePath } from '../../../utils/get_path';
 import { formatDate } from '../../../utils/format_date';
@@ -34,8 +34,6 @@ const isClickedAnchorOrButton = (target, currentTarget) => {
 
 /** @type {React.VFC<Props>} */
 const TimelineItem = ({ post }) => {
-  const { route } = useLocation();
-
   /**
    * ボタンやリンク以外の箇所をクリックしたとき かつ 文字が選択されてないとき、投稿詳細ページに遷移する
    * @type {React.MouseEventHandler}

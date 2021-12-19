@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route as RouteBase } from 'preact-iso'
+import { Route as RouteBase } from 'preact-router'
 
 import { Suspense } from '../Suspense';
 

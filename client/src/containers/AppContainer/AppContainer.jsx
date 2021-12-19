@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Helmet } from 'react-helmet';
-import { Router, lazy } from 'preact-iso';
+import { Router } from 'preact-router'
 
 import { AppPage } from '../../components/application/AppPage';
 import { Route } from '../../components/foundation/Route';
