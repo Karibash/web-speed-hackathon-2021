@@ -10,6 +10,7 @@
     "build:watch": "rimraf ../dist && cross-env NODE_ENV=development webpack serve"
   },
   "dependencies": {
+    "@loadable/component": "^5.15.2",
     "classnames": "2.3.1",
     "core-js": "3.19.1",
     "preact": "10.6.4",
