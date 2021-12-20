@@ -1,4 +1,7 @@
+import HMR from 'fastify-webpack-hmr';
+
 import { app } from './app';
+import { WEBPACK_CONFIG_PATH } from './paths';
 import { insertSeeds } from './seeds';
 import { sequelize } from './sequelize';
 
@@ -9,6 +12,10 @@ async function main() {
     logging: false,
   });
   await insertSeeds();
+
+  if (process.env.NODE_ENV === 'development' && process.env.npm_lifecycle_event === 'build:watch') {
+    app.register(HMR, { config: WEBPACK_CONFIG_PATH });
+  }
 
   await app.listen(Number(process.env.PORT || 3000), '0.0.0.0');
 

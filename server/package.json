@@ -5,9 +5,11 @@
   "license": "MPL-2.0",
   "main": "src/index.js",
   "scripts": {
-    "build": "echo noop",
+    "build": "rimraf ./dist && cross-env NODE_ENV=production webpack",
+    "build:dev": "rimraf ./dist && cross-env NODE_ENV=development webpack",
+    "build:watch": "cross-env NODE_ENV=development babel-node --experimental-wasm-threads src/index.js",
     "prestart": "npm-run-all prestart:clean prestart:init",
-    "start": "babel-node --experimental-wasm-threads src/index.js",
+    "start": "node --experimental-wasm-threads dist/index.js",
     "prestart:clean": "rimraf ../upload",
     "prestart:init": "mkdirp ../upload/images ../upload/images/waves ../upload/movies ../upload/sounds"
   },
@@ -37,11 +39,17 @@
     "uuid": "8.3.2"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-nullish-coalescing-operator": "7.16.5",
     "@types/bcrypt": "10.0.28-alpha",
     "@types/http-errors": "1.8.1",
     "@types/sharp": "0.29.4",
     "@types/sqlite3": "3.1.7",
-    "@types/uuid": "8.3.3"
+    "@types/uuid": "8.3.3",
+    "fastify-webpack-hmr": "3.0.0",
+    "webpack": "5.64.2",
+    "webpack-cli": "4.9.1",
+    "webpack-dev-server": "4.5.0",
+    "webpack-node-externals": "3.0.0"
   },
   "engines": {
     "node": "16.x.x"
