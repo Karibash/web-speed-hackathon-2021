@@ -12,5 +12,8 @@
   ],
   "engines": {
     "node": "16.x.x"
+  },
+  "resolutions": {
+    "preact-router@3.2.1": "patch:preact-router@npm:3.2.1#.yarn/patches/preact-router-npm-3.2.1-202bf64360"
   }
 }

@@ -14,10 +14,8 @@ import { Link as LinkBase } from 'preact-router/match';
  * @type {React.VFC<Props>}
  */
 const Link = ({ className, activeClassName, to, children, onClick }) => {
-  // HACK: activeClassNameを使用する際に、classNameを併用する事が出来ないのでclassを使用するようにする
-  // https://github.com/preactjs/preact-router/pull/386
   return (
-    <LinkBase class={className} activeClassName={activeClassName} href={to} onClick={onClick}>
+    <LinkBase className={className} activeClassName={activeClassName} href={to} onClick={onClick}>
       {children}
     </LinkBase>
   );

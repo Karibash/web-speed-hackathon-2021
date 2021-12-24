@@ -9666,6 +9666,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"preact-router@patch:preact-router@npm:3.2.1#.yarn/patches/preact-router-npm-3.2.1-202bf64360::locator=root-workspace-0b6124%40workspace%3A.":
+  version: 3.2.1
+  resolution: "preact-router@patch:preact-router@npm%3A3.2.1#.yarn/patches/preact-router-npm-3.2.1-202bf64360::version=3.2.1&hash=48e89d&locator=root-workspace-0b6124%40workspace%3A."
+  peerDependencies:
+    preact: ">=10"
+  checksum: 3229e42d13e61bd8e938d9ffa47cd8d9dce1de70d660e31d2c2063398cc2fcf8bd0ef8bf0c99d7d7a5b5943ad76e6ee136eace42a0f43c0629cbcc3451419b21
+  languageName: node
+  linkType: hard
+
 "preact-transition-group@npm:^1.1.1":
   version: 1.1.1
   resolution: "preact-transition-group@npm:1.1.1"

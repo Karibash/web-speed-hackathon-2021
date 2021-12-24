@@ -1,0 +1,80 @@
+diff --git a/match.js b/match.js
+index 395fe796c99aed1ea50fc79df2f4bc5d792ad833..f8e4812cc6ecf22fbdbb633f19dba1d07d597e0c 100644
+--- a/match.js
++++ b/match.js
+@@ -3,10 +3,12 @@
+ Object.defineProperty(exports, "__esModule", {
+ 	value: true
+ });
+-exports.Link = exports.Match = undefined;
++exports.Match = undefined;
+ 
+ var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+ 
++exports.Link = Link;
++
+ var _preact = require('preact');
+ 
+ var _preactRouter = require('preact-router');
+@@ -59,22 +61,26 @@ var Match = exports.Match = function (_Component) {
+ 	return Match;
+ }(_preact.Component);
+ 
+-var Link = function Link(_ref) {
+-	var activeClassName = _ref.activeClassName,
++function Link(_ref) {
++	var c = _ref.class,
++	    className = _ref.className,
++	    activeClass = _ref.activeClass,
++	    activeClassName = _ref.activeClassName,
+ 	    path = _ref.path,
+-	    props = _objectWithoutProperties(_ref, ['activeClassName', 'path']);
++	    props = _objectWithoutProperties(_ref, ['class', 'className', 'activeClass', 'activeClassName', 'path']);
+ 
++	var inactive = [c, className].filter(Boolean).join(' ');
++	var active = [c, className, activeClass, activeClassName].filter(Boolean).join(' ');
+ 	return (0, _preact.h)(
+ 		Match,
+ 		{ path: path || props.href },
+ 		function (_ref2) {
+ 			var matches = _ref2.matches;
+-			return (0, _preact.h)(_preactRouter.Link, _extends({}, props, { 'class': [props.class || props.className, matches && activeClassName].filter(Boolean).join(' ') }));
++			return (0, _preact.h)(_preactRouter.Link, _extends({}, props, { 'class': matches ? active : inactive }));
+ 		}
+ 	);
+-};
++}
+ 
+-exports.Link = Link;
+ exports.default = Match;
+ 
+ Match.Link = Link;
+diff --git a/src/match.js b/src/match.js
+index 90243d04516ec76729ea19dd8525e1aba27e5e7f..62f7c98169f8756ceba0dff1d54ad84d1b4a9c6d 100644
+--- a/src/match.js
++++ b/src/match.js
+@@ -24,13 +24,17 @@ export class Match extends Component {
+ 	}
+ }
+ 
+-export const Link = ({ activeClassName, path, ...props }) => (
+-	<Match path={path || props.href}>
+-		{ ({ matches }) => (
+-			<StaticLink {...props} class={[props.class || props.className, matches && activeClassName].filter(Boolean).join(' ')} />
+-		) }
+-	</Match>
+-);
++export function Link({ class: c, className, activeClass, activeClassName, path, ...props }) {
++	const inactive = [c, className].filter(Boolean).join(' ');
++	const active = [c, className, activeClass, activeClassName].filter(Boolean).join(' ');
++	return (
++		<Match path={path || props.href}>
++			{ ({ matches }) => (
++				<StaticLink {...props} class={matches ? active : inactive} />
++			) }
++		</Match>
++	);
++}
+ 
+ export default Match;
+ Match.Link = Link;
