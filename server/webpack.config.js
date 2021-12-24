@@ -2,7 +2,7 @@ const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
 const SRC_PATH = path.resolve(__dirname, './src');
-const DIST_PATH = path.resolve(__dirname, './dist');
+const DIST_PATH = path.resolve(__dirname, '../dist/server');
 
 /** @type {import('webpack').Configuration} */
 const config = {
