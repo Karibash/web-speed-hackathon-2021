@@ -22,7 +22,7 @@ const UserProfileContainer = ({ username }) => {
   }
 
   return (
-    <InfiniteScroll fetchMore={fetchMore} items={posts}>
+    <InfiniteScroll fetchMore={fetchMore}>
       <Title>{user.name} さんのタイムライン - CAwitter</Title>
       <UserProfilePage timeline={posts} user={user} />
     </InfiniteScroll>

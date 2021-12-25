@@ -23,7 +23,7 @@ const PostContainer = ({ postId }) => {
   }
 
   return (
-    <InfiniteScroll fetchMore={fetchMore} items={comments}>
+    <InfiniteScroll fetchMore={fetchMore}>
       <Title>{post.user.name} さんのつぶやき - CAwitter</Title>
       <PostPage comments={comments} post={post} />
     </InfiniteScroll>
