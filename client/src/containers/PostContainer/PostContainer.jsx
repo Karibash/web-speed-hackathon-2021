@@ -18,7 +18,7 @@ const PostContainer = ({ postId }) => {
     return <Title>読込中 - CAwitter</Title>;
   }
 
-  if (post === null) {
+  if (!post) {
     return <NotFoundContainer />;
   }
 

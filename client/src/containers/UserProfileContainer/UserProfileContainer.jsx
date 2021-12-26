@@ -17,7 +17,7 @@ const UserProfileContainer = ({ username }) => {
     return <Title>読込中 - CAwitter</Title>;
   }
 
-  if (user === null) {
+  if (!user) {
     return <NotFoundContainer />;
   }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import useSWRInfinite from 'swr/infinite'
 
 const LIMIT = 10;
 
@@ -18,72 +19,30 @@ const LIMIT = 10;
  * @returns {ReturnValues<T>}
  */
 export function useInfiniteFetch(apiPath, fetcher) {
-  const internalRef = React.useRef({ isLoading: false, offset: 0 });
+  const [result, setResult] = React.useState({ data: [], isLoading: false });
+  const internalRef = React.useRef({ isLoading: false, isReachingEnd: false });
 
-  const [result, setResult] = React.useState({
-    data: [],
-    error: null,
-    isLoading: true,
-  });
-
-  const fetchMore = React.useCallback(() => {
-    const { isLoading, offset } = internalRef.current;
-    if (isLoading) {
-      return;
-    }
-
-    setResult((cur) => ({
-      ...cur,
-      isLoading: true,
-    }));
-    internalRef.current = {
-      isLoading: true,
-      offset,
-    };
-
-    const promise = fetcher(`${apiPath}?offset=${offset}&limit=${LIMIT}`);
-
-    promise.then((data) => {
-      setResult((cur) => ({
-        ...cur,
-        data: [...cur.data, ...data],
-        isLoading: false,
-      }));
-      internalRef.current = {
-        isLoading: false,
-        offset: offset + LIMIT,
-      };
-    });
-
-    promise.catch((error) => {
-      setResult((cur) => ({
-        ...cur,
-        error,
-        isLoading: false,
-      }));
-      internalRef.current = {
-        isLoading: false,
-        offset,
-      };
-    });
-  }, [apiPath, fetcher]);
+  const { data = [], error, size, setSize } = useSWRInfinite((index, previous) => {
+    if (previous && !previous.length) return null;
+    return `${apiPath}?offset=${index * LIMIT}&limit=${LIMIT}`;
+  }, fetcher, { revalidateFirstPage: false });
 
   React.useEffect(() => {
-    setResult(() => ({
-      data: [],
-      error: null,
-      isLoading: true,
-    }));
-    internalRef.current = {
-      isLoading: false,
-      offset: 0,
-    };
+    const isLoading = (!data && !error) || (0 < size && data && typeof data[size - 1] === 'undefined');
+    const isReachingEnd = (data?.[0]?.length === 0) || (data && data[data.length - 1]?.length < LIMIT);
 
-    fetchMore();
-  }, [fetchMore]);
+    setResult({ data: [].concat(...data), isLoading });
+    internalRef.current = { isLoading, isReachingEnd };
+  }, [data, error, size]);
+
+  const fetchMore = React.useCallback(() => {
+    if (internalRef.current.isLoading || internalRef.current.isReachingEnd) return;
+    setSize(size => size + 1).finally(() => {});
+  }, [setSize]);
 
   return {
     ...result,
-    fetchMore,
+    error: error,
+    fetchMore: fetchMore,
   };
 }
