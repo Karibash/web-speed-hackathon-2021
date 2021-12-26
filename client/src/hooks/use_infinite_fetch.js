@@ -1,7 +1,7 @@
 import React from 'react';
 import useSWRInfinite from 'swr/infinite'
 
-const LIMIT = 10;
+const LIMIT = 5;
 
 /**
  * @template T
