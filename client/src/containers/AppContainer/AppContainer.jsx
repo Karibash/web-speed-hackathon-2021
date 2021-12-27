@@ -3,7 +3,6 @@ import { Router } from 'preact-router';
 import loadable from '@loadable/component';
 
 import { AppPage } from '../../components/application/AppPage';
-import { Title } from '../../components/foundation/Title';
 import { useFetch } from '../../hooks/use_fetch';
 import { fetchJSON } from '../../utils/fetchers';
 import { AuthModalContainer } from '../AuthModalContainer';
@@ -17,19 +16,15 @@ const NotFoundContainer = loadable(() => import('../NotFoundContainer').then(mod
 
 /** @type {React.VFC} */
 const AppContainer = () => {
-  const onChangeRoute = React.useCallback(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const [activeUser, setActiveUser] = React.useState(null);
-  const { data, isLoading } = useFetch('/api/v1/me', fetchJSON);
+  const { data } = useFetch('/api/v1/me', fetchJSON);
   React.useEffect(() => {
     setActiveUser(data);
   }, [data]);
 
-  if (isLoading) {
-    return <Title>読込中 - CAwitter</Title>;
-  }
+  const onChangeRoute = React.useCallback(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
