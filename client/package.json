@@ -10,7 +10,7 @@
     "build:watch": "rimraf ../dist/client && cross-env NODE_ENV=development webpack serve"
   },
   "dependencies": {
-    "@loadable/component": "^5.15.2",
+    "@loadable/component": "5.15.2",
     "classnames": "2.3.1",
     "core-js": "3.19.1",
     "preact": "10.6.4",
@@ -23,8 +23,10 @@
     "@babel/core": "7.16.0",
     "@babel/preset-env": "7.16.4",
     "@babel/preset-react": "7.16.0",
+    "@loadable/babel-plugin": "5.13.2",
+    "@loadable/webpack-plugin": "5.15.2",
     "@svgr/webpack": "6.1.1",
-    "@types/loadable__component": "^5.13.4",
+    "@types/loadable__component": "5.13.4",
     "@vue/preload-webpack-plugin": "2.0.0",
     "babel-loader": "8.2.3",
     "cross-env": "7.0.3",

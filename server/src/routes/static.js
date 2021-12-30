@@ -15,6 +15,7 @@ const router = (instance, options, next) => {
       PUBLIC_PATH,
       CLIENT_DIST_PATH,
     ],
+    index: false,
     prefix: '/',
     etag: true,
     maxAge: '100y',

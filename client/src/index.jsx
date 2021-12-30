@@ -1,16 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import { loadableReady } from '@loadable/component';
 
 import { AppContainer } from './containers/AppContainer';
-import { ModalProvider } from './contexts/ModalProvider';
 
-window.addEventListener('load', () => {
-  ReactDOM.render(
+loadableReady(() => {
+  ReactDOM.hydrate(
     <BrowserRouter>
-      <ModalProvider>
-        <AppContainer />
-      </ModalProvider>
+      <AppContainer />
     </BrowserRouter>,
     document.getElementById('app'),
   );

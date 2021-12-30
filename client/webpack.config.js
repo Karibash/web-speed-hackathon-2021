@@ -8,6 +8,7 @@ const PreloadWebpackPlugin = require('@vue/preload-webpack-plugin');
 const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const LoadablePlugin = require('@loadable/webpack-plugin');
 
 const SRC_PATH = path.resolve(__dirname, './src');
 const PUBLIC_PATH = path.resolve(__dirname, '../public');
@@ -15,7 +16,8 @@ const UPLOAD_PATH = path.resolve(__dirname, '../upload');
 const DIST_PATH = path.resolve(__dirname, '../dist/client');
 
 /** @type {import('webpack').Configuration} */
-const config = {
+const clientConfig = {
+  target: 'web',
   mode: process.env.NODE_ENV || 'none',
   devServer: {
     historyApiFallback: true,
@@ -34,6 +36,11 @@ const config = {
       path.resolve(SRC_PATH, './index.jsx'),
     ],
     webfont: path.resolve(SRC_PATH, './styles/webfont.css'),
+  },
+  output: {
+    filename: 'scripts/[name].[contenthash].js',
+    path: DIST_PATH,
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -60,11 +67,6 @@ const config = {
         use: [{ loader: '@svgr/webpack', options: { icon: true } }],
       },
     ],
-  },
-  output: {
-    filename: 'scripts/[name].[contenthash].js',
-    path: DIST_PATH,
-    publicPath: '/'
   },
   plugins: [
     new webpack.EnvironmentPlugin({
@@ -100,6 +102,7 @@ const config = {
       fileBlacklist: [/^.*(?<!\.css)$/],
     }),
     new RemoveEmptyScriptsPlugin(),
+    new LoadablePlugin(),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -122,4 +125,58 @@ const config = {
   },
 };
 
-module.exports = config;
+/** @type {import('webpack').Configuration} */
+const serverConfig = {
+  target: 'node',
+  mode: process.env.NODE_ENV || 'none',
+  entry: {
+    index: path.resolve(SRC_PATH, './containers/AppContainer/index.js'),
+  },
+  output: {
+    globalObject: 'this',
+    filename: 'ssr/[name].js',
+    chunkFilename: 'ssr/chunks/[name].js',
+    path: DIST_PATH,
+    library : {
+      type: 'commonjs2',
+    },
+  },
+  module: {
+    rules: [
+      {
+        exclude: /node_modules/,
+        test: /\.jsx?$/,
+        use: [{ loader: 'babel-loader' }],
+      },
+      {
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        use: [{ loader: '@svgr/webpack', options: { icon: true } }],
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'],
+    fallback: {
+      fs: false,
+      path: false,
+    },
+    alias: {
+      'react': 'preact/compat',
+      'react/jsx-runtime': 'preact/jsx-runtime',
+      'react-dom': 'preact/compat',
+      'react-dom/test-utils': 'preact/test-utils',
+    },
+  },
+  externals: {
+    'react': 'react',
+    'react-dom': 'react-dom',
+    'react-router-dom': 'react-router-dom',
+    '@loadable/component': '@loadable/component',
+  },
+  optimization: {
+    minimize: false,
+  },
+};
+
+module.exports = [clientConfig, serverConfig];

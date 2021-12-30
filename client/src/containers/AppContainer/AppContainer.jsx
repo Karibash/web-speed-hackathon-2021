@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import loadable from '@loadable/component';
 
 import { AppPage } from '../../components/application/AppPage';
+import { ModalProvider } from '../../contexts/ModalProvider';
 import { useFetch } from '../../hooks/use_fetch';
 import { fetchJSON } from '../../utils/fetchers';
 import { AuthModalContainer } from '../AuthModalContainer';
@@ -28,7 +29,7 @@ const AppContainer = () => {
   }, [data]);
 
   return (
-    <>
+    <ModalProvider>
       <AppPage activeUser={activeUser}>
         <Routes>
           <Route element={<TimelineContainer />} path="/" />
@@ -40,7 +41,7 @@ const AppContainer = () => {
       </AppPage>
       <AuthModalContainer onUpdateActiveUser={setActiveUser} />
       <NewPostModalContainer />
-    </>
+    </ModalProvider>
   );
 };
 

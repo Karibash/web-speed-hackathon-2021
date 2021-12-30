@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 
 const SRC_PATH = path.resolve(__dirname, './src');
@@ -25,13 +26,12 @@ const config = {
   },
   resolve: {
     extensions: ['.js'],
-    alias: {
-      'react': 'preact/compat',
-      'react/jsx-runtime': 'preact/jsx-runtime',
-      'react-dom': 'preact/compat',
-      'react-dom/test-utils': 'preact/test-utils',
-    },
   },
+  plugins: [
+    new webpack.IgnorePlugin({
+      resourceRegExp: /\.(css|html)$/,
+    }),
+  ],
   externals: [
     nodeExternals({
       modulesFromFile: true,

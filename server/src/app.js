@@ -3,6 +3,7 @@ import fastifyCookie from 'fastify-cookie';
 import fastifySession from '@fastify/session';
 
 import { apiRouter } from './routes/api';
+import { ssrRouter } from './routes/ssr';
 import { staticRouter } from './routes/static';
 
 const app = fastify({
@@ -28,10 +29,7 @@ app.addContentTypeParser('*', (request, payload, next) => {
 });
 
 app.register(apiRouter, { prefix: '/api/v1' });
+app.register(ssrRouter);
 app.register(staticRouter);
-
-app.setNotFoundHandler((_request, reply) => {
-  reply.sendFile('index.html');
-});
 
 export { app };
