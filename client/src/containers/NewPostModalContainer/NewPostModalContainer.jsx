@@ -58,7 +58,7 @@ const NewPostModalContainer = () => {
     [onRequestCloseModal, navigate],
   );
 
-  if (state !== 'post') return undefined;
+  if (state !== 'post') return null;
   return (
     <Modal onRequestCloseModal={onRequestCloseModal}>
       <NewPostModalPage

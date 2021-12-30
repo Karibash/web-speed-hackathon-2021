@@ -46,7 +46,7 @@ const AuthModalContainer = ({ onUpdateActiveUser }) => {
     [onRequestCloseModal, onUpdateActiveUser],
   );
 
-  if (state !== 'auth') return undefined;
+  if (state !== 'auth') return null;
   return (
     <Modal onRequestCloseModal={onRequestCloseModal}>
       <AuthModalPage

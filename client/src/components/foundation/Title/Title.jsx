@@ -13,7 +13,7 @@ const Title = ({ children: title }) => {
     document.title = title;
   }, [title] );
 
-  return <></>;
+  return null;
 };
 
 export { Title };

@@ -11,11 +11,7 @@ import { Title } from '../Title';
  * @type {React.VFC<Props>}
  */
 const Loading = () => {
-  return (
-    <div>
-      <Title>読込中 - CAwitter</Title>
-    </div>
-  );
+  return <Title>読込中 - CAwitter</Title>;
 };
 
 export { Loading };
