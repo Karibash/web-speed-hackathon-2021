@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import { InfiniteScroll } from '../../components/foundation/InfiniteScroll';
+import { Loading } from '../../components/foundation/Loading';
 import { Title } from '../../components/foundation/Title';
 import { UserProfilePage } from '../../components/user_profile/UserProfilePage';
 import { useFetch } from '../../hooks/use_fetch';
@@ -16,7 +17,7 @@ const UserProfileContainer = () => {
   const { data: posts, fetchMore } = useInfiniteFetch(`/api/v1/users/${username}/posts`, fetchJSON);
 
   if (isLoadingUser) {
-    return <Title>読込中 - CAwitter</Title>;
+    return <Loading />;
   }
 
   if (!user) {

@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import { InfiniteScroll } from '../../components/foundation/InfiniteScroll';
+import { Loading } from '../../components/foundation/Loading';
 import { Title } from '../../components/foundation/Title';
 import { PostPage } from '../../components/post/PostPage';
 import { useFetch } from '../../hooks/use_fetch';
@@ -17,7 +18,7 @@ const PostContainer = () => {
   const { data: comments, fetchMore } = useInfiniteFetch(`/api/v1/posts/${postId}/comments`, fetchJSON);
 
   if (isLoadingPost) {
-    return <Title>読込中 - CAwitter</Title>;
+    return <Loading />;
   }
 
   if (!post) {
