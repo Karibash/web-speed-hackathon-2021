@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 import { InfiniteScroll } from '../../components/foundation/InfiniteScroll';
 import { Title } from '../../components/foundation/Title';
@@ -9,7 +10,8 @@ import { fetchJSON } from '../../utils/fetchers';
 import { NotFoundContainer } from '../NotFoundContainer';
 
 /** @type {React.VFC} */
-const PostContainer = ({ postId }) => {
+const PostContainer = () => {
+  const { postId } = useParams();
   const { data: post, isLoading: isLoadingPost } = useFetch(`/api/v1/posts/${postId}`, fetchJSON);
 
   const { data: comments, fetchMore } = useInfiniteFetch(`/api/v1/posts/${postId}/comments`, fetchJSON);

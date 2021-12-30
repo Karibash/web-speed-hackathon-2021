@@ -1,5 +1,5 @@
 import React from 'react';
-import { route } from 'preact-router';
+import { useNavigate } from 'react-router-dom';
 
 import { Modal } from '../../components/modal/Modal';
 import { NewPostModalPage } from '../../components/new_post_modal/NewPostModalPage';
@@ -27,6 +27,8 @@ async function sendNewPost({ images, movie, sound, text }) {
 
 /** @type {React.VFC} */
 const NewPostModalContainer = () => {
+  const navigate = useNavigate();
+
   const [hasError, setHasError] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const state = useModalState();
@@ -46,14 +48,14 @@ const NewPostModalContainer = () => {
         setIsLoading(true);
         const post = await sendNewPost(params);
         onRequestCloseModal();
-        route(`/posts/${post.id}`);
+        navigate(`/posts/${post.id}`);
       } catch (_err) {
         setHasError(true);
       } finally {
         setIsLoading(false);
       }
     },
-    [onRequestCloseModal, route],
+    [onRequestCloseModal, navigate],
   );
 
   if (state !== 'post') return undefined;

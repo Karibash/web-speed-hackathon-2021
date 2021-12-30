@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router } from 'preact-router';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import loadable from '@loadable/component';
 
 import { AppPage } from '../../components/application/AppPage';
@@ -16,26 +16,27 @@ const NotFoundContainer = loadable(() => import('../NotFoundContainer').then(mod
 
 /** @type {React.VFC} */
 const AppContainer = () => {
+  const { pathname } = useLocation();
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   const [activeUser, setActiveUser] = React.useState(null);
   const { data } = useFetch('/api/v1/me', fetchJSON);
   React.useEffect(() => {
     setActiveUser(data);
   }, [data]);
 
-  const onChangeRoute = React.useCallback(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <>
       <AppPage activeUser={activeUser}>
-        <Router onChange={onChangeRoute}>
-          <TimelineContainer path="/" />
-          <UserProfileContainer path="/users/:username" />
-          <PostContainer path="/posts/:postId" />
-          <TermContainer path="/terms" />
-          <NotFoundContainer path="*" />
-        </Router>
+        <Routes>
+          <Route element={<TimelineContainer />} path="/" />
+          <Route element={<UserProfileContainer />} path="/users/:username" />
+          <Route element={<PostContainer />} path="/posts/:postId" />
+          <Route element={<TermContainer />} path="/terms" />
+          <Route element={<NotFoundContainer />} path="*" />
+        </Routes>
       </AppPage>
       <AuthModalContainer onUpdateActiveUser={setActiveUser} />
       <NewPostModalContainer />

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link as LinkBase } from 'preact-router/match';
+import { NavLink } from 'react-router-dom';
+import classNames from 'classnames';
 
 /**
  * @typedef {object} Props
@@ -15,9 +16,13 @@ import { Link as LinkBase } from 'preact-router/match';
  */
 const Link = ({ className, activeClassName, to, children, onClick }) => {
   return (
-    <LinkBase className={className} activeClassName={activeClassName} href={to} onClick={onClick}>
+    <NavLink
+      className={props => classNames(className, { [activeClassName]: props.isActive })}
+      to={to}
+      onClick={onClick}
+    >
       {children}
-    </LinkBase>
+    </NavLink>
   );
 };
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
 import { InfiniteScroll } from '../../components/foundation/InfiniteScroll';
 import { Title } from '../../components/foundation/Title';
@@ -9,7 +10,8 @@ import { fetchJSON } from '../../utils/fetchers';
 import { NotFoundContainer } from '../NotFoundContainer';
 
 /** @type {React.VFC} */
-const UserProfileContainer = ({ username }) => {
+const UserProfileContainer = () => {
+  const { username } = useParams();
   const { data: user, isLoading: isLoadingUser } = useFetch(`/api/v1/users/${username}`, fetchJSON);
   const { data: posts, fetchMore } = useInfiniteFetch(`/api/v1/users/${username}/posts`, fetchJSON);
 

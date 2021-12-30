@@ -1,5 +1,5 @@
 import React from 'react';
-import { route } from 'preact-router';
+import { useNavigate } from 'react-router-dom';
 
 import { getProfileImagePath } from '../../../utils/get_path';
 import { formatDate } from '../../../utils/format_date';
@@ -34,6 +34,8 @@ const isClickedAnchorOrButton = (target, currentTarget) => {
 
 /** @type {React.VFC<Props>} */
 const TimelineItem = ({ post }) => {
+  const navigate = useNavigate();
+
   /**
    * ボタンやリンク以外の箇所をクリックしたとき かつ 文字が選択されてないとき、投稿詳細ページに遷移する
    * @type {React.MouseEventHandler}
@@ -42,10 +44,10 @@ const TimelineItem = ({ post }) => {
     (ev) => {
       const isSelectedText = document.getSelection().isCollapsed === false;
       if (!isClickedAnchorOrButton(ev.target, ev.currentTarget) && !isSelectedText) {
-        route(`/posts/${post.id}`);
+        navigate(`/posts/${post.id}`);
       }
     },
-    [post, route],
+    [post, navigate],
   );
 
   const roughHeight = React.useMemo(() => {
