@@ -8,11 +8,11 @@ import { fetchJSON } from '../../utils/fetchers';
 import { AuthModalContainer } from '../AuthModalContainer';
 import { NewPostModalContainer } from '../NewPostModalContainer';
 
-const TimelineContainer = loadable(() => import('../TimelineContainer').then(module => ({ default: module.TimelineContainer })));
-const UserProfileContainer = loadable(() => import('../UserProfileContainer').then(module => ({ default: module.UserProfileContainer })));
-const PostContainer = loadable(() => import('../PostContainer').then(module => ({ default: module.PostContainer })));
-const TermContainer = loadable(() => import('../TermContainer').then(module => ({ default: module.TermContainer })));
-const NotFoundContainer = loadable(() => import('../NotFoundContainer').then(module => ({ default: module.NotFoundContainer })));
+const TimelineContainer = loadable(() => import('../TimelineContainer'), { resolveComponent: module => module['TimelineContainer'] });
+const UserProfileContainer = loadable(() => import('../UserProfileContainer'), { resolveComponent: module => module['UserProfileContainer'] });
+const PostContainer = loadable(() => import('../PostContainer'), { resolveComponent: module => module['PostContainer'] });
+const TermContainer = loadable(() => import('../TermContainer'), { resolveComponent: module => module['TermContainer'] });
+const NotFoundContainer = loadable(() => import('../NotFoundContainer'), { resolveComponent: module => module['NotFoundContainer'] });
 
 /** @type {React.VFC} */
 const AppContainer = () => {
