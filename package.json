@@ -3,7 +3,7 @@
   "license": "MPL-2.0",
   "packageManager": "yarn@3.1.1",
   "scripts": {
-    "build": "yarn workspaces foreach -ipv run build",
+    "build": "yarn workspaces foreach -iv run build",
     "start": "yarn workspace @web-speed-hackathon-2021/server start"
   },
   "workspaces": [
