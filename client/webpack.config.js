@@ -1,4 +1,5 @@
 const path = require('path');
+const childProcess = require('child_process');
 
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -14,6 +15,13 @@ const SRC_PATH = path.resolve(__dirname, './src');
 const PUBLIC_PATH = path.resolve(__dirname, '../public');
 const UPLOAD_PATH = path.resolve(__dirname, '../upload');
 const DIST_PATH = path.resolve(__dirname, '../dist/client');
+
+/**
+ * @returns {string}
+ */
+const getCommitHash = () => {
+  return childProcess.execSync('git rev-parse --short HEAD').toString().trim();
+};
 
 /** @type {import('webpack').Configuration} */
 const clientConfig = {
@@ -72,7 +80,7 @@ const clientConfig = {
     new webpack.EnvironmentPlugin({
       BUILD_DATE: new Date().toISOString(),
       // Heroku では SOURCE_VERSION 環境変数から commit hash を参照できます
-      COMMIT_HASH: process.env.SOURCE_VERSION || '',
+      COMMIT_HASH: process.env.SOURCE_VERSION || getCommitHash() || '',
       NODE_ENV: process.env.NODE_ENV || 'development',
     }),
     new MiniCssExtractPlugin({

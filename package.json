@@ -4,7 +4,8 @@
   "packageManager": "yarn@3.1.1",
   "scripts": {
     "build": "yarn workspaces foreach -iv run build",
-    "start": "yarn workspace @web-speed-hackathon-2021/server start"
+    "start": "node ./dist/server/index.js",
+    "gcp-build": "yarn build"
   },
   "workspaces": [
     "client",
