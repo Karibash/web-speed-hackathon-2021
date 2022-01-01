@@ -4,10 +4,12 @@ import { StaticRouter } from 'react-router-dom/server';
 import { ChunkExtractor } from '@loadable/server';
 import path from 'path';
 import fs from 'fs';
+import LRUCache from 'lru-cache';
 
 import { CLIENT_DIST_PATH } from '../paths';
 import { AppContainer } from '../../../dist/client/ssr';
 
+const cache = new LRUCache(50);
 const indexHtml = fs.readFileSync(path.resolve(CLIENT_DIST_PATH, './index.html'), 'utf8');
 
 /**
@@ -18,6 +20,15 @@ const indexHtml = fs.readFileSync(path.resolve(CLIENT_DIST_PATH, './index.html')
  */
 const router = (instance, options, next) => {
   instance.setNotFoundHandler((request, reply) => {
+    const cachedHtml = cache.get(request.url);
+
+    if (cachedHtml) {
+      reply
+        .type('text/html')
+        .header('Cache-Control', 'public, s-maxage=1, stale-while-revalidate=31536000')
+        .send(cachedHtml);
+    }
+
     const extractor = new ChunkExtractor({ statsFile: path.resolve(CLIENT_DIST_PATH, './loadable-stats.json') });
     const chunks = extractor.collectChunks((
       <StaticRouter location={request.url}>
@@ -25,10 +36,15 @@ const router = (instance, options, next) => {
       </StaticRouter>
     ));
 
-    reply
-      .type('text/html')
-      .header('Cache-Control', 'public, s-maxage=1, stale-while-revalidate=31536000')
-      .send(indexHtml.replace(/(<div id="app">)/, `$1${renderToString(chunks)}`));
+    const html = indexHtml.replace(/(<div id="app">)/, `$1${renderToString(chunks)}`);
+    if (!cachedHtml) {
+      reply
+        .type('text/html')
+        .header('Cache-Control', 'public, s-maxage=1, stale-while-revalidate=31536000')
+        .send(html);
+    }
+
+    cache.set(request.url, html);
   });
 
   next();

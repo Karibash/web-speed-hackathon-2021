@@ -1949,6 +1949,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lru-cache@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "@types/lru-cache@npm:5.1.1"
+  checksum: e1d6c0085f61b16ec5b3073ec76ad1be4844ea036561c3f145fc19f71f084b58a6eb600b14128aa95809d057d28f1d147c910186ae51219f58366ffd2ff2e118
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*":
   version: 17.0.4
   resolution: "@types/node@npm:17.0.4"
@@ -2092,6 +2099,7 @@ __metadata:
     "@types/http-errors": 1.8.1
     "@types/loadable__component": 5.13.4
     "@types/loadable__server": 5.12.6
+    "@types/lru-cache": ^5.1.1
     "@types/sharp": 0.29.4
     "@types/sqlite3": 3.1.7
     "@types/uuid": 8.3.3
@@ -2105,6 +2113,7 @@ __metadata:
     http-errors: 1.8.1
     iconv-lite: 0.6.3
     jschardet: 3.0.0
+    lru-cache: ^6.0.0
     mkdirp: 1.0.4
     music-metadata: 7.11.4
     npm-run-all: 4.1.5
