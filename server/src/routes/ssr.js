@@ -40,7 +40,9 @@ const router = (instance, options, next) => {
       </StaticRouter>
     ));
 
-    const html = indexHtml.replace(/(<div id="app">)/, `$1${renderToString(chunks)}`);
+    const html = indexHtml
+      .replace(/(<div id="app">)/, `$1${renderToString(chunks)}`)
+      .replace(/(<script id="fallback" type="application\/json">)/, `$1${JSON.stringify(fallback)}`);
     if (!cachedHtml) {
       reply
         .type('text/html')
