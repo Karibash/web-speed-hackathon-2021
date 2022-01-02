@@ -62,8 +62,8 @@ const TimelineItem = ({ post }) => {
       className="px-1 hover:bg-gray-50 sm:px-4"
       onClick={handleClick}
       style={{
-        'content-visibility': 'auto',
-        'contain-intrinsic-size': `0 ${roughHeight}px`,
+        contentVisibility: 'auto',
+        containIntrinsicSize: `0 ${roughHeight}px`,
       }}
     >
       <div className="flex pb-4 pt-2 px-2 border-b border-gray-300 sm:px-4">
