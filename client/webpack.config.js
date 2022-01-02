@@ -181,6 +181,7 @@ const serverConfig = {
     'react-dom': 'react-dom',
     'react-router-dom': 'react-router-dom',
     '@loadable/component': '@loadable/component',
+    'swr': 'swr',
   },
   optimization: {
     minimize: false,

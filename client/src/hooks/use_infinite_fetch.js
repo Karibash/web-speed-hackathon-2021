@@ -1,5 +1,6 @@
 import React from 'react';
-import useSWRInfinite from 'swr/infinite'
+import { useSWRConfig } from 'swr';
+import useSWRInfinite, { unstable_serialize } from 'swr/infinite'
 
 const LIMIT = 5;
 
@@ -19,13 +20,21 @@ const LIMIT = 5;
  * @returns {ReturnValues<T>}
  */
 export function useInfiniteFetch(apiPath, fetcher) {
-  const [result, setResult] = React.useState({ data: [], isLoading: false });
-  const internalRef = React.useRef({ isLoading: false, isReachingEnd: false });
-
-  const { data = [], error, size, setSize } = useSWRInfinite((index, previous) => {
+  const getKey = React.useCallback((index, previous) => {
     if (previous && !previous.length) return null;
     return `${apiPath}?offset=${index * LIMIT}&limit=${LIMIT}`;
-  }, fetcher, { revalidateFirstPage: false });
+  }, [apiPath]);
+
+  const { fallback } = useSWRConfig();
+  const { data = [], error, size, setSize } = useSWRInfinite(getKey, fetcher, {
+    revalidateFirstPage: false,
+    fallback: {
+      [unstable_serialize(getKey)]: fallback[apiPath],
+    },
+  });
+
+  const [result, setResult] = React.useState({ data: [].concat(...data), isLoading: false });
+  const internalRef = React.useRef({ isLoading: false, isReachingEnd: false });
 
   React.useEffect(() => {
     const isLoading = (!data && !error) || (0 < size && data && typeof data[size - 1] === 'undefined');

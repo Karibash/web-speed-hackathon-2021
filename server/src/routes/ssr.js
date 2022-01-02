@@ -2,10 +2,12 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import { ChunkExtractor } from '@loadable/server';
+import { SWRConfig } from 'swr';
 import path from 'path';
 import fs from 'fs';
 
 import { cache } from '../cache';
+import { fallbackRouter } from '../fallback';
 import { CLIENT_DIST_PATH } from '../paths';
 import { AppContainer } from '../../../dist/client/ssr';
 
@@ -18,7 +20,7 @@ const indexHtml = fs.readFileSync(path.resolve(CLIENT_DIST_PATH, './index.html')
  * @returns {() => void}
  */
 const router = (instance, options, next) => {
-  instance.setNotFoundHandler((request, reply) => {
+  instance.setNotFoundHandler(async (request, reply) => {
     const cachedHtml = cache.get(request.url);
 
     if (cachedHtml) {
@@ -28,10 +30,13 @@ const router = (instance, options, next) => {
         .send(cachedHtml);
     }
 
+    const fallback = await fallbackRouter.lookup(request, reply);
     const extractor = new ChunkExtractor({ statsFile: path.resolve(CLIENT_DIST_PATH, './loadable-stats.json') });
     const chunks = extractor.collectChunks((
       <StaticRouter location={request.url}>
-        <AppContainer />
+        <SWRConfig value={{ fallback: fallback ?? {} }}>
+          <AppContainer />
+        </SWRConfig>
       </StaticRouter>
     ));
 

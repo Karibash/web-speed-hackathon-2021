@@ -1949,7 +1949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lru-cache@npm:^5.1.1":
+"@types/lru-cache@npm:5.1.1":
   version: 5.1.1
   resolution: "@types/lru-cache@npm:5.1.1"
   checksum: e1d6c0085f61b16ec5b3073ec76ad1be4844ea036561c3f145fc19f71f084b58a6eb600b14128aa95809d057d28f1d147c910186ae51219f58366ffd2ff2e118
@@ -2069,7 +2069,7 @@ __metadata:
     react-router-dom: 6.0.2
     rimraf: 3.0.2
     style-loader: 3.3.1
-    swr: ^1.1.1
+    swr: 1.1.1
     tailwindcss: 2.2.19
     terser-webpack-plugin: 5.2.5
     webpack: 5.64.2
@@ -2099,7 +2099,7 @@ __metadata:
     "@types/http-errors": 1.8.1
     "@types/loadable__component": 5.13.4
     "@types/loadable__server": 5.12.6
-    "@types/lru-cache": ^5.1.1
+    "@types/lru-cache": 5.1.1
     "@types/sharp": 0.29.4
     "@types/sqlite3": 3.1.7
     "@types/uuid": 8.3.3
@@ -2110,10 +2110,11 @@ __metadata:
     fastify-cookie: 5.4.0
     fastify-static: 4.5.0
     fastify-webpack-hmr: 3.0.0
+    find-my-way: 5.1.1
     http-errors: 1.8.1
     iconv-lite: 0.6.3
     jschardet: 3.0.0
-    lru-cache: ^6.0.0
+    lru-cache: 6.0.0
     mkdirp: 1.0.4
     music-metadata: 7.11.4
     npm-run-all: 4.1.5
@@ -2124,6 +2125,7 @@ __metadata:
     sequelize: 6.11.0
     sharp: 0.29.3
     sqlite3: 5.0.2
+    swr: 1.1.1
     ulid: 2.3.0
     uuid: 8.3.2
     webpack: 5.64.2
@@ -5454,6 +5456,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"find-my-way@npm:5.1.1":
+  version: 5.1.1
+  resolution: "find-my-way@npm:5.1.1"
+  dependencies:
+    fast-decode-uri-component: ^1.0.1
+    fast-deep-equal: ^3.1.3
+    safe-regex2: ^2.0.0
+    semver-store: ^0.3.0
+  checksum: cab80736d3756bf4b261a1e4d7464207749cb48f72547ce4aa8982b501009e87435e7380c15c172dc78f7c5f8805042a5e6923cdffa6a3c0478c5bf2a02f72d4
+  languageName: node
+  linkType: hard
+
 "find-my-way@npm:^4.1.0":
   version: 4.5.0
   resolution: "find-my-way@npm:4.5.0"
@@ -7325,21 +7339,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lru-cache@npm:6.0.0, lru-cache@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "lru-cache@npm:6.0.0"
+  dependencies:
+    yallist: ^4.0.0
+  checksum: f97f499f898f23e4585742138a22f22526254fdba6d75d41a1c2526b3b6cc5747ef59c5612ba7375f42aca4f8461950e925ba08c991ead0651b4918b7c978297
+  languageName: node
+  linkType: hard
+
 "lru-cache@npm:^5.1.1":
   version: 5.1.1
   resolution: "lru-cache@npm:5.1.1"
   dependencies:
     yallist: ^3.0.2
   checksum: c154ae1cbb0c2206d1501a0e94df349653c92c8cbb25236d7e85190bcaf4567a03ac6eb43166fabfa36fd35623694da7233e88d9601fbf411a9a481d85dbd2cb
-  languageName: node
-  linkType: hard
-
-"lru-cache@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "lru-cache@npm:6.0.0"
-  dependencies:
-    yallist: ^4.0.0
-  checksum: f97f499f898f23e4585742138a22f22526254fdba6d75d41a1c2526b3b6cc5747ef59c5612ba7375f42aca4f8461950e925ba08c991ead0651b4918b7c978297
   languageName: node
   linkType: hard
 
@@ -11646,7 +11660,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swr@npm:^1.1.1":
+"swr@npm:1.1.1":
   version: 1.1.1
   resolution: "swr@npm:1.1.1"
   peerDependencies:
