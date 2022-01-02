@@ -8,10 +8,14 @@ import { AppContainer } from './containers/AppContainer';
 
 loadableReady(() => {
   const fallbackElement = document.getElementById('fallback');
-  const fallback = JSON.parse(fallbackElement.textContent);
+  const swrConfig = {
+    fallback: JSON.parse(fallbackElement.textContent),
+    revalidateIfStale: false,
+    shouldRetryOnError: false,
+  };
   ReactDOM.hydrate(
     <BrowserRouter>
-      <SWRConfig value={{ fallback }}>
+      <SWRConfig value={swrConfig}>
         <AppContainer />
       </SWRConfig>
     </BrowserRouter>,
