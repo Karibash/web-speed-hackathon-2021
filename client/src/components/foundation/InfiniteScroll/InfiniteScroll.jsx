@@ -8,7 +8,9 @@ import React from 'react';
  */
 
 /** @type {React.VFC<Props>} */
-const InfiniteScroll = ({ children, fetchMore }) => {
+const InfiniteScroll = ({ children, fetchMore, items }) => {
+  const latestItem = items[items.length - 1];
+
   const ref = React.useRef();
   React.useEffect(() => {
     if (!ref.current) return
@@ -22,7 +24,7 @@ const InfiniteScroll = ({ children, fetchMore }) => {
     return () => {
       observer.disconnect();
     };
-  }, [fetchMore]);
+  }, [latestItem, fetchMore]);
 
   return (
     <>

@@ -11,7 +11,7 @@ const TimelineContainer = () => {
   const { data: posts, fetchMore } = useInfiniteFetch('/api/v1/posts', fetchJSON);
 
   return (
-    <InfiniteScroll fetchMore={fetchMore}>
+    <InfiniteScroll fetchMore={fetchMore} items={posts}>
       <Title>タイムライン - CAwitter</Title>
       <TimelinePage timeline={posts} />
     </InfiniteScroll>
