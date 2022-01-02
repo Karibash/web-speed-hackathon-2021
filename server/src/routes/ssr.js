@@ -4,12 +4,11 @@ import { StaticRouter } from 'react-router-dom/server';
 import { ChunkExtractor } from '@loadable/server';
 import path from 'path';
 import fs from 'fs';
-import LRUCache from 'lru-cache';
 
+import { cache } from '../cache';
 import { CLIENT_DIST_PATH } from '../paths';
 import { AppContainer } from '../../../dist/client/ssr';
 
-const cache = new LRUCache(50);
 const indexHtml = fs.readFileSync(path.resolve(CLIENT_DIST_PATH, './index.html'), 'utf8');
 
 /**

@@ -1,3 +1,4 @@
+import { cache } from '../../cache';
 import { insertSeeds } from '../../seeds';
 import { sequelize } from '../../sequelize';
 
@@ -9,6 +10,8 @@ import { sequelize } from '../../sequelize';
  */
 const router = (instance, options, next) => {
   instance.post('/initialize', async (_request, reply) => {
+    cache.reset();
+
     await sequelize.sync({
       force: true,
       logging: false,
