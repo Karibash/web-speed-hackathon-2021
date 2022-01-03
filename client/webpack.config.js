@@ -39,11 +39,13 @@ const clientConfig = {
   devtool: process.env.NODE_ENV === 'development' ? 'eval-cheap-module-source-map' : false,
   entry: {
     main: [
-      path.resolve(SRC_PATH, './index.css'),
       path.resolve(SRC_PATH, './buildinfo.js'),
       path.resolve(SRC_PATH, './index.jsx'),
     ],
-    webfont: path.resolve(SRC_PATH, './styles/webfont.css'),
+    styles: [
+      path.resolve(SRC_PATH, './index.css'),
+      path.resolve(SRC_PATH, './styles/webfont.css')
+    ],
   },
   output: {
     filename: 'scripts/[name].[contenthash].js',
@@ -90,9 +92,7 @@ const clientConfig = {
       inject: true,
       template: path.resolve(SRC_PATH, './index.html'),
     }),
-    new HTMLInlineCSSWebpackPlugin({
-      filter: (fileName) => ['index.html', 'webfont'].some(name => fileName.includes(name)),
-    }),
+    new HTMLInlineCSSWebpackPlugin(),
     new PreloadWebpackPlugin({
       rel: 'prefetch',
       include: {
@@ -100,14 +100,6 @@ const clientConfig = {
         entries: ['main'],
       },
       fileBlacklist: [/^.*(?<!\.js)$/],
-    }),
-    new PreloadWebpackPlugin({
-      rel: 'preload',
-      include: {
-        type: 'allChunks',
-        entries: ['main'],
-      },
-      fileBlacklist: [/^.*(?<!\.css)$/],
     }),
     new RemoveEmptyScriptsPlugin(),
     new LoadablePlugin(),
