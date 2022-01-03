@@ -2027,16 +2027,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/preload-webpack-plugin@npm:2.0.0":
-  version: 2.0.0
-  resolution: "@vue/preload-webpack-plugin@npm:2.0.0"
-  peerDependencies:
-    html-webpack-plugin: ^5.0.0 || ^4.5.1
-    webpack: ^5.20.0 || ^4.1.0
-  checksum: 8c8247c2a7dafa14c66adb92e14d44305970cb8642392b5f5b174282c1a5f146d85457575af02e86787aa58d9eee5ee3994aac6b275b9539f7310d3763c262fe
-  languageName: node
-  linkType: hard
-
 "@web-speed-hackathon-2021/client@workspace:client":
   version: 0.0.0-use.local
   resolution: "@web-speed-hackathon-2021/client@workspace:client"
@@ -2049,7 +2039,6 @@ __metadata:
     "@loadable/webpack-plugin": 5.15.2
     "@svgr/webpack": 6.1.1
     "@types/loadable__component": 5.13.4
-    "@vue/preload-webpack-plugin": 2.0.0
     babel-loader: 8.2.3
     classnames: 2.3.1
     core-js: 3.19.1

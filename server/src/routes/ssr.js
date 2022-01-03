@@ -40,9 +40,14 @@ const router = (instance, options, next) => {
       </StaticRouter>
     ));
 
+    const rendered = renderToString(chunks);
+    const scriptTags = extractor.getScriptTags();
+    const linkTags = extractor.getLinkTags();
     const html = indexHtml
-      .replace(/(<div id="app">)/, `$1${renderToString(chunks)}`)
+      .replace(/(<\/head>)/, `${scriptTags}${linkTags}$1`)
+      .replace(/(<div id="app">)/, `$1${rendered}`)
       .replace(/(<script id="fallback" type="application\/json">)/, `$1${JSON.stringify(fallback)}`);
+
     if (!cachedHtml) {
       reply
         .type('text/html')

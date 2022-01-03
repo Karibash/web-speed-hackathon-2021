@@ -5,7 +5,6 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin').default;
-const PreloadWebpackPlugin = require('@vue/preload-webpack-plugin');
 const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -89,18 +88,10 @@ const clientConfig = {
       filename: 'styles/[name].[contenthash].css'
     }),
     new HtmlWebpackPlugin({
-      inject: true,
+      inject: false,
       template: path.resolve(SRC_PATH, './index.html'),
     }),
     new HTMLInlineCSSWebpackPlugin(),
-    new PreloadWebpackPlugin({
-      rel: 'prefetch',
-      include: {
-        type: 'asyncChunks',
-        entries: ['main'],
-      },
-      fileBlacklist: [/^.*(?<!\.js)$/],
-    }),
     new RemoveEmptyScriptsPlugin(),
     new LoadablePlugin(),
   ],

@@ -27,7 +27,6 @@
     "@loadable/webpack-plugin": "5.15.2",
     "@svgr/webpack": "6.1.1",
     "@types/loadable__component": "5.13.4",
-    "@vue/preload-webpack-plugin": "2.0.0",
     "babel-loader": "8.2.3",
     "cross-env": "7.0.3",
     "css-loader": "6.5.1",
